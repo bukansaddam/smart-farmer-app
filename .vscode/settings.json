@@ -1,0 +1,7 @@
+{
+    "editor.parameterHints.enabled": true,
+
+    "editor.codeActionsOnSave": {
+        "source.fixAll": "explicit"
+    },
+}

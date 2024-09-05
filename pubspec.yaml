@@ -29,7 +29,7 @@ environment:
 # versions available, run `flutter pub outdated`.
 dependencies:
   carousel_slider: ^5.0.0
-  collection: ^1.19.0
+  collection: ^1.18.0
   contentsize_tabbarview: ^0.0.2
   cupertino_icons: ^1.0.8
   delightful_toast: ^1.1.0

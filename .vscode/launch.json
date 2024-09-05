@@ -1,0 +1,34 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "smart_farmer_app (pemilik)",
+      "request": "launch",
+      "type": "dart",
+      "program": "lib/main/pemilik_main.dart",
+      "args": ["--dart-define=actor=pemilik", "--flavor", "pemilik", "--target", "lib/main/pemilik_main.dart"]
+    },
+    {
+      "name": "smart_farmer_app (petugas)",
+      "request": "launch",
+      "type": "dart",
+      "program": "lib/main/petugas_main.dart",
+      "args": ["--dart-define=actor=petugas", "--flavor", "petugas", "--target", "lib/main/petugas_main.dart"]
+    },
+    {
+      "name": "smart_farmer_app (investor)",
+      "request": "launch",
+      "type": "dart",
+      "program": "lib/main/investor_main.dart",
+      "args": ["--dart-define=actor=investor", "--flavor", "investor", "--target", "lib/main/investor_main.dart"]
+    },
+
+    {
+      "name": "smart_farmer_app (qr)",
+      "request": "launch",
+      "type": "dart",
+      "program": "lib/main/qr_main.dart",
+      "args": ["--dart-define=actor=pemilik", "--flavor", "pemilik", "--target", "lib/main/qr_main.dart"]
+    },
+  ]
+}

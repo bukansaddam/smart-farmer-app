@@ -1,4 +1,4 @@
-package com.example.smart_farmer_app
+package com.saddam.smart_farmer_app
 
 import io.flutter.embedding.android.FlutterActivity
 
