@@ -3,7 +3,8 @@ import 'package:provider/provider.dart';
 import 'package:smart_farmer_app/provider/home_provider.dart';
 import 'package:smart_farmer_app/provider/inventory_provider.dart';
 import 'package:smart_farmer_app/screen/pemilik/dashboard_pemilik_screen.dart';
-import 'package:smart_farmer_app/screen/pemilik/inventory_screen.dart';
+import 'package:smart_farmer_app/screen/pemilik/inventory/inventory_screen.dart';
+import 'package:smart_farmer_app/screen/pemilik/kandang/kandang_screen.dart';
 import 'package:smart_farmer_app/screen/widgets/item_drawer.dart';
 
 class HomePemilikScreen extends StatefulWidget {
@@ -40,12 +41,18 @@ class _HomePemilikScreenState extends State<HomePemilikScreen> {
 
   static const List<Widget> _widgetOptions = <Widget>[
     DashboardPemilikScreen(),
-    Text('Home Pemilik'),
+    KandangScreen(),
     Text('Home Pemilik'),
     Text('Inventory'),
-    InventoryScreen(category: 'Pakan',),
-    InventoryScreen(category: 'Vitamin',),
-    InventoryScreen(category: 'Disinfektan',),
+    InventoryScreen(
+      category: 'Pakan',
+    ),
+    InventoryScreen(
+      category: 'Vitamin',
+    ),
+    InventoryScreen(
+      category: 'Disinfektan',
+    ),
   ];
 
   @override
@@ -70,23 +77,23 @@ class _HomePemilikScreenState extends State<HomePemilikScreen> {
             ItemDrawer(
               icon: Icons.house,
               title: 'Kandang',
-              selected: _selectedIndex == 2,
+              selected: _selectedIndex == 1,
               onTap: () {
                 setState(() {
                   _title = 'Kandang';
                 });
-                _onItemTapped(2);
+                _onItemTapped(1);
               },
             ),
             ItemDrawer(
               icon: Icons.people,
               title: 'Petugas',
-              selected: _selectedIndex == 1,
+              selected: _selectedIndex == 2,
               onTap: () {
                 setState(() {
                   _title = 'Petugas';
                 });
-                _onItemTapped(1);
+                _onItemTapped(2);
               },
             ),
             ItemDrawer(
@@ -103,7 +110,10 @@ class _HomePemilikScreenState extends State<HomePemilikScreen> {
             ExpansionTile(
               leading: const Icon(Icons.storage),
               title: const Text('Inventory'),
-              initiallyExpanded: true,
+              initiallyExpanded: false,
+              iconColor: Colors.black,
+              childrenPadding: const EdgeInsets.only(left: 16),
+              shape: const Border(),
               children: [
                 ItemDrawer(
                   icon: Icons.add,

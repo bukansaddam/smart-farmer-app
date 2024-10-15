@@ -2,16 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:smart_farmer_app/model/detail_inventory.dart';
+import 'package:smart_farmer_app/model/detail_kandang.dart';
 import 'package:smart_farmer_app/provider/auth_provider.dart';
 import 'package:smart_farmer_app/provider/home_provider.dart';
 import 'package:smart_farmer_app/provider/inventory_provider.dart';
 import 'package:smart_farmer_app/provider/kandang_provider.dart';
 import 'package:smart_farmer_app/screen/auth/register_screen.dart';
-import 'package:smart_farmer_app/screen/pemilik/add_inventory_screen.dart';
-import 'package:smart_farmer_app/screen/pemilik/detail_inventory_screen.dart';
+import 'package:smart_farmer_app/screen/pemilik/inventory/add_inventory_screen.dart';
+import 'package:smart_farmer_app/screen/pemilik/inventory/detail_inventory_screen.dart';
 import 'package:smart_farmer_app/screen/home_pemilik_screen.dart';
 import 'package:smart_farmer_app/screen/auth/login_screen.dart';
-import 'package:smart_farmer_app/screen/pemilik/edit_inventory_screen.dart';
+import 'package:smart_farmer_app/screen/pemilik/inventory/edit_inventory_screen.dart';
+import 'package:smart_farmer_app/screen/pemilik/kandang/add_kandang_screen.dart';
+import 'package:smart_farmer_app/screen/pemilik/kandang/detail_kandang_screen.dart';
+import 'package:smart_farmer_app/screen/pemilik/kandang/edit_kandang_screen.dart';
 import 'package:smart_farmer_app/screen/splash_screen.dart';
 import '../config/injection.dart' as di;
 
@@ -132,6 +136,39 @@ class PemilikApp extends StatelessWidget {
                     idKandang: extraId,
                     category: extraCategory,
                   );
+                }),
+            GoRoute(
+                path: 'detail_kandang',
+                name: 'detail_kandang',
+                builder: (context, state) {
+                  String extraId = (state.extra
+                      as Map<String, dynamic>)['idKandang'] as String;
+                  return DetailKandangScreen(
+                    idKandang: extraId,
+                  );
+                },
+                routes: [
+                  GoRoute(
+                    path: 'edit_kandang',
+                    name: 'edit_kandang',
+                    builder: (context, state) {
+                      String extraId = (state.extra
+                          as Map<String, dynamic>)['idKandang'] as String;
+                      DetailKandang detailKandang =
+                          (state.extra as Map<String, dynamic>)['detailKandang']
+                              as DetailKandang;
+                      return EditKandangScreen(
+                        idKandang: extraId,
+                        detailKandang: detailKandang,
+                      );
+                    },
+                  ),
+                ]),
+            GoRoute(
+                path: 'add_kandang',
+                name: 'add_kandang',
+                builder: (context, state) {
+                  return const AddKandangScreen();
                 }),
           ]),
     ],

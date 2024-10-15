@@ -19,8 +19,8 @@ class KandangResponse with _$KandangResponse {
 @freezed
 class KandangResult with _$KandangResult {
   const factory KandangResult({
-    required int totalCount,
-    required int totalPages,
+    required int? totalCount,
+    required int? totalPages,
     required List<Kandang> data,
   }) = _KandangResult;
 
@@ -33,10 +33,20 @@ class Kandang with _$Kandang {
     required String id,
     required String nama,
     required String lokasi,
-    required int latitude,
-    required int longitude,
+    required double latitude,
+    required double longitude,
     required int jumlahAyam,
+    required List<KandangImage> images,
   }) = _Kandang;
 
   factory Kandang.fromJson(Map<String, dynamic> json) => _$KandangFromJson(json);
+}
+
+@freezed
+class KandangImage with _$KandangImage {
+  const factory KandangImage({
+    required String url,
+  }) = _KandangImage;
+
+  factory KandangImage.fromJson(Map<String, dynamic> json) => _$KandangImageFromJson(json);
 }

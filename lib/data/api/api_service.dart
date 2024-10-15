@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:smart_farmer_app/model/detail_inventory.dart';
+import 'package:smart_farmer_app/model/detail_kandang.dart';
 import 'package:smart_farmer_app/model/inventory.dart';
 import 'package:smart_farmer_app/model/kandang.dart';
 import 'package:smart_farmer_app/model/login.dart';
@@ -10,7 +11,7 @@ import 'package:http/http.dart' as http;
 import 'package:smart_farmer_app/model/upload.dart';
 
 class ApiService {
-  static const String baseUrl = 'http://192.168.1.7:3000';
+  static const String baseUrl = 'http://192.168.23.216:3000';
   static const String _login = '/auth';
   static const String _register = '/auth';
   static const String _inventory = '/inventory';
@@ -255,7 +256,7 @@ class ApiService {
     pageSize = 10,
   }) async {
     final response = await http.get(
-      Uri.parse('$baseUrl$_kandang?page=$page&pageSize=$pageSize'),
+      Uri.parse('$baseUrl$_kandang?page=$page&pageSize=$pageSize&nama=$nama'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
         'Authorization': 'Bearer $token',
@@ -266,6 +267,140 @@ class ApiService {
       return KandangResponse.fromJson(jsonDecode(response.body));
     } else {
       return KandangResponse.fromJson(jsonDecode(response.body));
+    }
+  }
+
+  Future<DetailKandangResponse> getDetailKandang({
+    required String token,
+    required String idKandang,
+  }) async {
+    final response = await http.get(
+      Uri.parse('$baseUrl$_kandang/$idKandang'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Authorization': 'Bearer $token',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      return DetailKandangResponse.fromJson(jsonDecode(response.body));
+    } else {
+      return DetailKandangResponse.fromJson(jsonDecode(response.body));
+    }
+  }
+
+  Future<UploadResponse> createKandang({
+    required String token,
+    required String nama,
+    required String lokasi,
+    required double latitude,
+    required double longitude,
+    required int jumlahAyam,
+    required List<List<int>> images,
+    required List<String> filenames,
+  }) async {
+    final request = http.MultipartRequest(
+      'POST',
+      Uri.parse('$baseUrl$_kandang'),
+    );
+
+    for (int i = 0; i < images.length; i++) {
+      var multipartFile = http.MultipartFile.fromBytes(
+        'images',
+        images[i],
+        filename: filenames[i],
+      );
+      request.files.add(multipartFile);
+    }
+
+    request.fields.addAll({
+      'nama': nama,
+      'lokasi': lokasi,
+      'latitude': latitude.toString(),
+      'longitude': longitude.toString(),
+      'jumlah_ayam': jumlahAyam.toString(),
+    });
+
+    request.headers.addAll({
+      'Authorization': 'Bearer $token',
+    });
+
+    final streamedResponse = await request.send();
+    final response = await http.Response.fromStream(streamedResponse);
+
+    if (response.statusCode == 200) {
+      return UploadResponse.fromJson(jsonDecode(response.body));
+    } else {
+      return UploadResponse.fromJson(jsonDecode(response.body));
+    }
+  }
+
+  Future<UploadResponse> updateKandang({
+    required String token,
+    required String id,
+    List<List<int>>? images,
+    List<String>? filenames,
+    String? nama,
+    String? lokasi,
+    double? latitude,
+    double? longitude,
+    int? jumlahAyam,
+    List<String>? deletedImages,
+  }) async {
+    var request =
+        http.MultipartRequest('PUT', Uri.parse('$baseUrl$_kandang/$id'));
+
+    if (images != null) {
+      for (int i = 0; i < images.length; i++) {
+        var multipartFile = http.MultipartFile.fromBytes(
+          'images',
+          images[i],
+          filename: filenames![i],
+        );
+        request.files.add(multipartFile);
+      }
+    }
+
+    if (nama != null) request.fields['nama'] = nama;
+    if (lokasi != null) request.fields['lokasi'] = lokasi;
+    if (latitude != null) request.fields['latitude'] = latitude.toString();
+    if (longitude != null) request.fields['longitude'] = longitude.toString();
+    if (jumlahAyam != null) request.fields['jumlah_ayam'] = jumlahAyam.toString();
+    if (deletedImages != null) {
+      request.fields['deletedImagesId'] = deletedImages.join(',');
+    }
+
+    request.headers.addAll({
+      'Content-Type': 'multipart/form-data',
+      'Authorization': 'Bearer $token',
+    });
+
+    var streamedResponse = await request.send();
+    var response = await http.Response.fromStream(streamedResponse);
+
+    if (response.statusCode == 200) {
+      return UploadResponse.fromJson(jsonDecode(response.body));
+    } else {
+      return UploadResponse.fromJson(jsonDecode(response.body));
+    }
+  }
+
+  Future<UploadResponse> deleteKandang({
+    required String token,
+    required String idKandang,
+  }) async {
+    final response = await http.delete(
+      Uri.parse('$baseUrl$_kandang/$idKandang'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Authorization': 'Bearer $token',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      return UploadResponse.fromJson(jsonDecode(response.body));
+    } else {
+      return UploadResponse.fromJson(jsonDecode(response.body));
     }
   }
 }

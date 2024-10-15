@@ -221,8 +221,8 @@ KandangResult _$KandangResultFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$KandangResult {
-  int get totalCount => throw _privateConstructorUsedError;
-  int get totalPages => throw _privateConstructorUsedError;
+  int? get totalCount => throw _privateConstructorUsedError;
+  int? get totalPages => throw _privateConstructorUsedError;
   List<Kandang> get data => throw _privateConstructorUsedError;
 
   /// Serializes this KandangResult to a JSON map.
@@ -241,7 +241,7 @@ abstract class $KandangResultCopyWith<$Res> {
           KandangResult value, $Res Function(KandangResult) then) =
       _$KandangResultCopyWithImpl<$Res, KandangResult>;
   @useResult
-  $Res call({int totalCount, int totalPages, List<Kandang> data});
+  $Res call({int? totalCount, int? totalPages, List<Kandang> data});
 }
 
 /// @nodoc
@@ -259,19 +259,19 @@ class _$KandangResultCopyWithImpl<$Res, $Val extends KandangResult>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? totalCount = null,
-    Object? totalPages = null,
+    Object? totalCount = freezed,
+    Object? totalPages = freezed,
     Object? data = null,
   }) {
     return _then(_value.copyWith(
-      totalCount: null == totalCount
+      totalCount: freezed == totalCount
           ? _value.totalCount
           : totalCount // ignore: cast_nullable_to_non_nullable
-              as int,
-      totalPages: null == totalPages
+              as int?,
+      totalPages: freezed == totalPages
           ? _value.totalPages
           : totalPages // ignore: cast_nullable_to_non_nullable
-              as int,
+              as int?,
       data: null == data
           ? _value.data
           : data // ignore: cast_nullable_to_non_nullable
@@ -288,7 +288,7 @@ abstract class _$$KandangResultImplCopyWith<$Res>
       __$$KandangResultImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({int totalCount, int totalPages, List<Kandang> data});
+  $Res call({int? totalCount, int? totalPages, List<Kandang> data});
 }
 
 /// @nodoc
@@ -304,19 +304,19 @@ class __$$KandangResultImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? totalCount = null,
-    Object? totalPages = null,
+    Object? totalCount = freezed,
+    Object? totalPages = freezed,
     Object? data = null,
   }) {
     return _then(_$KandangResultImpl(
-      totalCount: null == totalCount
+      totalCount: freezed == totalCount
           ? _value.totalCount
           : totalCount // ignore: cast_nullable_to_non_nullable
-              as int,
-      totalPages: null == totalPages
+              as int?,
+      totalPages: freezed == totalPages
           ? _value.totalPages
           : totalPages // ignore: cast_nullable_to_non_nullable
-              as int,
+              as int?,
       data: null == data
           ? _value._data
           : data // ignore: cast_nullable_to_non_nullable
@@ -338,9 +338,9 @@ class _$KandangResultImpl implements _KandangResult {
       _$$KandangResultImplFromJson(json);
 
   @override
-  final int totalCount;
+  final int? totalCount;
   @override
-  final int totalPages;
+  final int? totalPages;
   final List<Kandang> _data;
   @override
   List<Kandang> get data {
@@ -389,17 +389,17 @@ class _$KandangResultImpl implements _KandangResult {
 
 abstract class _KandangResult implements KandangResult {
   const factory _KandangResult(
-      {required final int totalCount,
-      required final int totalPages,
+      {required final int? totalCount,
+      required final int? totalPages,
       required final List<Kandang> data}) = _$KandangResultImpl;
 
   factory _KandangResult.fromJson(Map<String, dynamic> json) =
       _$KandangResultImpl.fromJson;
 
   @override
-  int get totalCount;
+  int? get totalCount;
   @override
-  int get totalPages;
+  int? get totalPages;
   @override
   List<Kandang> get data;
 
@@ -420,9 +420,10 @@ mixin _$Kandang {
   String get id => throw _privateConstructorUsedError;
   String get nama => throw _privateConstructorUsedError;
   String get lokasi => throw _privateConstructorUsedError;
-  int get latitude => throw _privateConstructorUsedError;
-  int get longitude => throw _privateConstructorUsedError;
+  double get latitude => throw _privateConstructorUsedError;
+  double get longitude => throw _privateConstructorUsedError;
   int get jumlahAyam => throw _privateConstructorUsedError;
+  List<KandangImage> get images => throw _privateConstructorUsedError;
 
   /// Serializes this Kandang to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -442,9 +443,10 @@ abstract class $KandangCopyWith<$Res> {
       {String id,
       String nama,
       String lokasi,
-      int latitude,
-      int longitude,
-      int jumlahAyam});
+      double latitude,
+      double longitude,
+      int jumlahAyam,
+      List<KandangImage> images});
 }
 
 /// @nodoc
@@ -468,6 +470,7 @@ class _$KandangCopyWithImpl<$Res, $Val extends Kandang>
     Object? latitude = null,
     Object? longitude = null,
     Object? jumlahAyam = null,
+    Object? images = null,
   }) {
     return _then(_value.copyWith(
       id: null == id
@@ -485,15 +488,19 @@ class _$KandangCopyWithImpl<$Res, $Val extends Kandang>
       latitude: null == latitude
           ? _value.latitude
           : latitude // ignore: cast_nullable_to_non_nullable
-              as int,
+              as double,
       longitude: null == longitude
           ? _value.longitude
           : longitude // ignore: cast_nullable_to_non_nullable
-              as int,
+              as double,
       jumlahAyam: null == jumlahAyam
           ? _value.jumlahAyam
           : jumlahAyam // ignore: cast_nullable_to_non_nullable
               as int,
+      images: null == images
+          ? _value.images
+          : images // ignore: cast_nullable_to_non_nullable
+              as List<KandangImage>,
     ) as $Val);
   }
 }
@@ -509,9 +516,10 @@ abstract class _$$KandangImplCopyWith<$Res> implements $KandangCopyWith<$Res> {
       {String id,
       String nama,
       String lokasi,
-      int latitude,
-      int longitude,
-      int jumlahAyam});
+      double latitude,
+      double longitude,
+      int jumlahAyam,
+      List<KandangImage> images});
 }
 
 /// @nodoc
@@ -533,6 +541,7 @@ class __$$KandangImplCopyWithImpl<$Res>
     Object? latitude = null,
     Object? longitude = null,
     Object? jumlahAyam = null,
+    Object? images = null,
   }) {
     return _then(_$KandangImpl(
       id: null == id
@@ -550,15 +559,19 @@ class __$$KandangImplCopyWithImpl<$Res>
       latitude: null == latitude
           ? _value.latitude
           : latitude // ignore: cast_nullable_to_non_nullable
-              as int,
+              as double,
       longitude: null == longitude
           ? _value.longitude
           : longitude // ignore: cast_nullable_to_non_nullable
-              as int,
+              as double,
       jumlahAyam: null == jumlahAyam
           ? _value.jumlahAyam
           : jumlahAyam // ignore: cast_nullable_to_non_nullable
               as int,
+      images: null == images
+          ? _value._images
+          : images // ignore: cast_nullable_to_non_nullable
+              as List<KandangImage>,
     ));
   }
 }
@@ -572,7 +585,9 @@ class _$KandangImpl implements _Kandang {
       required this.lokasi,
       required this.latitude,
       required this.longitude,
-      required this.jumlahAyam});
+      required this.jumlahAyam,
+      required final List<KandangImage> images})
+      : _images = images;
 
   factory _$KandangImpl.fromJson(Map<String, dynamic> json) =>
       _$$KandangImplFromJson(json);
@@ -584,15 +599,22 @@ class _$KandangImpl implements _Kandang {
   @override
   final String lokasi;
   @override
-  final int latitude;
+  final double latitude;
   @override
-  final int longitude;
+  final double longitude;
   @override
   final int jumlahAyam;
+  final List<KandangImage> _images;
+  @override
+  List<KandangImage> get images {
+    if (_images is EqualUnmodifiableListView) return _images;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_images);
+  }
 
   @override
   String toString() {
-    return 'Kandang(id: $id, nama: $nama, lokasi: $lokasi, latitude: $latitude, longitude: $longitude, jumlahAyam: $jumlahAyam)';
+    return 'Kandang(id: $id, nama: $nama, lokasi: $lokasi, latitude: $latitude, longitude: $longitude, jumlahAyam: $jumlahAyam, images: $images)';
   }
 
   @override
@@ -608,13 +630,14 @@ class _$KandangImpl implements _Kandang {
             (identical(other.longitude, longitude) ||
                 other.longitude == longitude) &&
             (identical(other.jumlahAyam, jumlahAyam) ||
-                other.jumlahAyam == jumlahAyam));
+                other.jumlahAyam == jumlahAyam) &&
+            const DeepCollectionEquality().equals(other._images, _images));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(
-      runtimeType, id, nama, lokasi, latitude, longitude, jumlahAyam);
+  int get hashCode => Object.hash(runtimeType, id, nama, lokasi, latitude,
+      longitude, jumlahAyam, const DeepCollectionEquality().hash(_images));
 
   /// Create a copy of Kandang
   /// with the given fields replaced by the non-null parameter values.
@@ -637,9 +660,10 @@ abstract class _Kandang implements Kandang {
       {required final String id,
       required final String nama,
       required final String lokasi,
-      required final int latitude,
-      required final int longitude,
-      required final int jumlahAyam}) = _$KandangImpl;
+      required final double latitude,
+      required final double longitude,
+      required final int jumlahAyam,
+      required final List<KandangImage> images}) = _$KandangImpl;
 
   factory _Kandang.fromJson(Map<String, dynamic> json) = _$KandangImpl.fromJson;
 
@@ -650,16 +674,167 @@ abstract class _Kandang implements Kandang {
   @override
   String get lokasi;
   @override
-  int get latitude;
+  double get latitude;
   @override
-  int get longitude;
+  double get longitude;
   @override
   int get jumlahAyam;
+  @override
+  List<KandangImage> get images;
 
   /// Create a copy of Kandang
   /// with the given fields replaced by the non-null parameter values.
   @override
   @JsonKey(includeFromJson: false, includeToJson: false)
   _$$KandangImplCopyWith<_$KandangImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+KandangImage _$KandangImageFromJson(Map<String, dynamic> json) {
+  return _KandangImage.fromJson(json);
+}
+
+/// @nodoc
+mixin _$KandangImage {
+  String get url => throw _privateConstructorUsedError;
+
+  /// Serializes this KandangImage to a JSON map.
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+
+  /// Create a copy of KandangImage
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  $KandangImageCopyWith<KandangImage> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $KandangImageCopyWith<$Res> {
+  factory $KandangImageCopyWith(
+          KandangImage value, $Res Function(KandangImage) then) =
+      _$KandangImageCopyWithImpl<$Res, KandangImage>;
+  @useResult
+  $Res call({String url});
+}
+
+/// @nodoc
+class _$KandangImageCopyWithImpl<$Res, $Val extends KandangImage>
+    implements $KandangImageCopyWith<$Res> {
+  _$KandangImageCopyWithImpl(this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+
+  /// Create a copy of KandangImage
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? url = null,
+  }) {
+    return _then(_value.copyWith(
+      url: null == url
+          ? _value.url
+          : url // ignore: cast_nullable_to_non_nullable
+              as String,
+    ) as $Val);
+  }
+}
+
+/// @nodoc
+abstract class _$$KandangImageImplCopyWith<$Res>
+    implements $KandangImageCopyWith<$Res> {
+  factory _$$KandangImageImplCopyWith(
+          _$KandangImageImpl value, $Res Function(_$KandangImageImpl) then) =
+      __$$KandangImageImplCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call({String url});
+}
+
+/// @nodoc
+class __$$KandangImageImplCopyWithImpl<$Res>
+    extends _$KandangImageCopyWithImpl<$Res, _$KandangImageImpl>
+    implements _$$KandangImageImplCopyWith<$Res> {
+  __$$KandangImageImplCopyWithImpl(
+      _$KandangImageImpl _value, $Res Function(_$KandangImageImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of KandangImage
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? url = null,
+  }) {
+    return _then(_$KandangImageImpl(
+      url: null == url
+          ? _value.url
+          : url // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
+  }
+}
+
+/// @nodoc
+@JsonSerializable()
+class _$KandangImageImpl implements _KandangImage {
+  const _$KandangImageImpl({required this.url});
+
+  factory _$KandangImageImpl.fromJson(Map<String, dynamic> json) =>
+      _$$KandangImageImplFromJson(json);
+
+  @override
+  final String url;
+
+  @override
+  String toString() {
+    return 'KandangImage(url: $url)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$KandangImageImpl &&
+            (identical(other.url, url) || other.url == url));
+  }
+
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  int get hashCode => Object.hash(runtimeType, url);
+
+  /// Create a copy of KandangImage
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$KandangImageImplCopyWith<_$KandangImageImpl> get copyWith =>
+      __$$KandangImageImplCopyWithImpl<_$KandangImageImpl>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$KandangImageImplToJson(
+      this,
+    );
+  }
+}
+
+abstract class _KandangImage implements KandangImage {
+  const factory _KandangImage({required final String url}) = _$KandangImageImpl;
+
+  factory _KandangImage.fromJson(Map<String, dynamic> json) =
+      _$KandangImageImpl.fromJson;
+
+  @override
+  String get url;
+
+  /// Create a copy of KandangImage
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$KandangImageImplCopyWith<_$KandangImageImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

@@ -24,8 +24,8 @@ Map<String, dynamic> _$$KandangResponseImplToJson(
 
 _$KandangResultImpl _$$KandangResultImplFromJson(Map<String, dynamic> json) =>
     _$KandangResultImpl(
-      totalCount: (json['totalCount'] as num).toInt(),
-      totalPages: (json['totalPages'] as num).toInt(),
+      totalCount: (json['totalCount'] as num?)?.toInt(),
+      totalPages: (json['totalPages'] as num?)?.toInt(),
       data: (json['data'] as List<dynamic>)
           .map((e) => Kandang.fromJson(e as Map<String, dynamic>))
           .toList(),
@@ -43,9 +43,12 @@ _$KandangImpl _$$KandangImplFromJson(Map<String, dynamic> json) =>
       id: json['id'] as String,
       nama: json['nama'] as String,
       lokasi: json['lokasi'] as String,
-      latitude: (json['latitude'] as num).toInt(),
-      longitude: (json['longitude'] as num).toInt(),
+      latitude: (json['latitude'] as num).toDouble(),
+      longitude: (json['longitude'] as num).toDouble(),
       jumlahAyam: (json['jumlahAyam'] as num).toInt(),
+      images: (json['images'] as List<dynamic>)
+          .map((e) => KandangImage.fromJson(e as Map<String, dynamic>))
+          .toList(),
     );
 
 Map<String, dynamic> _$$KandangImplToJson(_$KandangImpl instance) =>
@@ -56,4 +59,15 @@ Map<String, dynamic> _$$KandangImplToJson(_$KandangImpl instance) =>
       'latitude': instance.latitude,
       'longitude': instance.longitude,
       'jumlahAyam': instance.jumlahAyam,
+      'images': instance.images,
+    };
+
+_$KandangImageImpl _$$KandangImageImplFromJson(Map<String, dynamic> json) =>
+    _$KandangImageImpl(
+      url: json['url'] as String,
+    );
+
+Map<String, dynamic> _$$KandangImageImplToJson(_$KandangImageImpl instance) =>
+    <String, dynamic>{
+      'url': instance.url,
     };
