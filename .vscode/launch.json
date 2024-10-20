@@ -22,13 +22,12 @@
       "program": "lib/main/investor_main.dart",
       "args": ["--dart-define=actor=investor", "--flavor", "investor", "--target", "lib/main/investor_main.dart"]
     },
-
-    {
-      "name": "smart_farmer_app (qr)",
-      "request": "launch",
-      "type": "dart",
-      "program": "lib/main/qr_main.dart",
-      "args": ["--dart-define=actor=pemilik", "--flavor", "pemilik", "--target", "lib/main/qr_main.dart"]
-    },
+    // {
+    //   "name": "smart_farmer_app (qr)",
+    //   "request": "launch",
+    //   "type": "dart",
+    //   "program": "lib/main/qr_main.dart",
+    //   "args": ["--dart-define=actor=pemilik", "--flavor", "pemilik", "--target", "lib/main/qr_main.dart"]
+    // },
   ]
 }

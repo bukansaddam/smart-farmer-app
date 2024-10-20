@@ -1,5 +1,4 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'dart:convert';
 
 part 'detail_kandang.freezed.dart';
 part 'detail_kandang.g.dart';
@@ -32,7 +31,8 @@ class DetailKandang with _$DetailKandang {
     required List<KandangImage> kandangImages,
   }) = _DetailKandang;
 
-  factory DetailKandang.fromJson(Map<String, dynamic> json) => _$DetailKandangFromJson(json);
+  factory DetailKandang.fromJson(Map<String, dynamic> json) =>
+      _$DetailKandangFromJson(json);
 }
 
 @freezed

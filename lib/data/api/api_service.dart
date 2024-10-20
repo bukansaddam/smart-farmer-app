@@ -3,19 +3,22 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:smart_farmer_app/model/detail_inventory.dart';
 import 'package:smart_farmer_app/model/detail_kandang.dart';
+import 'package:smart_farmer_app/model/detail_laporan.dart';
 import 'package:smart_farmer_app/model/inventory.dart';
 import 'package:smart_farmer_app/model/kandang.dart';
+import 'package:smart_farmer_app/model/laporan.dart';
 import 'package:smart_farmer_app/model/login.dart';
 import 'package:smart_farmer_app/model/register.dart';
 import 'package:http/http.dart' as http;
 import 'package:smart_farmer_app/model/upload.dart';
 
 class ApiService {
-  static const String baseUrl = 'http://192.168.23.216:3000';
+  static const String baseUrl = 'http://192.168.1.3:3000';
   static const String _login = '/auth';
   static const String _register = '/auth';
   static const String _inventory = '/inventory';
   static const String _kandang = '/kandang';
+  static const String _laporan = '/laporan';
 
   final actor = const String.fromEnvironment('actor', defaultValue: 'customer');
 
@@ -365,7 +368,8 @@ class ApiService {
     if (lokasi != null) request.fields['lokasi'] = lokasi;
     if (latitude != null) request.fields['latitude'] = latitude.toString();
     if (longitude != null) request.fields['longitude'] = longitude.toString();
-    if (jumlahAyam != null) request.fields['jumlah_ayam'] = jumlahAyam.toString();
+    if (jumlahAyam != null)
+      request.fields['jumlah_ayam'] = jumlahAyam.toString();
     if (deletedImages != null) {
       request.fields['deletedImagesId'] = deletedImages.join(',');
     }
@@ -395,6 +399,77 @@ class ApiService {
         'Content-Type': 'application/json; charset=UTF-8',
         'Authorization': 'Bearer $token',
       },
+    );
+
+    if (response.statusCode == 200) {
+      return UploadResponse.fromJson(jsonDecode(response.body));
+    } else {
+      return UploadResponse.fromJson(jsonDecode(response.body));
+    }
+  }
+
+  Future<LaporanResponse> getAllLaporan({
+    required String token,
+    String jenis = '',
+    int page = 1,
+    int pageSize = 10,
+    String kandang = '',
+  }) async {
+    final response = await http.get(
+      Uri.parse(
+          '$baseUrl$_laporan/owner/all?page=$page&pageSize=$pageSize&jenis=$jenis&kandang=$kandang'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Authorization': 'Bearer $token',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      return LaporanResponse.fromJson(jsonDecode(response.body));
+    } else {
+      return LaporanResponse.fromJson(jsonDecode(response.body));
+    }
+  }
+
+  Future<DetailLaporanResponse> getDetailLaporan({
+    required String token,
+    required String idLaporan,
+  }) async {
+    final response = await http.get(
+      Uri.parse('$baseUrl$_laporan/$idLaporan'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Authorization': 'Bearer $token',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      return DetailLaporanResponse.fromJson(jsonDecode(response.body));
+    } else {
+      return DetailLaporanResponse.fromJson(jsonDecode(response.body));
+    }
+  }
+
+  Future<UploadResponse> updateStatusLaporan({
+    required String token,
+    required String idLaporan,
+    required String status,
+    required String kategori,
+  }) async {
+    String url = kategori == 'Kematian Ayam'
+        ? '$baseUrl$_laporan/kematian-ayam/$idLaporan'
+        : kategori == 'Hasil Panen Telur'
+            ? '$baseUrl$_laporan/panen-telur/$idLaporan'
+            : '$baseUrl$_laporan/ayam-pedaging/$idLaporan';
+    final response = await http.put(
+      Uri.parse(url),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Authorization': 'Bearer $token',
+      },
+      body: jsonEncode(<String, dynamic>{
+        'status': status,
+      }),
     );
 
     if (response.statusCode == 200) {

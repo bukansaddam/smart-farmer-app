@@ -13,7 +13,10 @@ import 'package:smart_farmer_app/screen/widgets/toast_message.dart';
 
 class DetailInventoryScreen extends StatefulWidget {
   const DetailInventoryScreen(
-      {super.key, required this.id, required this.category, required this.kandangId});
+      {super.key,
+      required this.id,
+      required this.category,
+      required this.kandangId});
 
   final String id;
   final String category;

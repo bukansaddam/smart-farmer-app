@@ -326,7 +326,12 @@ class _AddKandangScreenState extends State<AddKandangScreen> {
       final jumlahAyam = _jumlahAyamController.text;
 
       await provider
-          .createKandang(nama: name, lokasi: lokasi, latitude: 0, longitude: 0, jumlahAyam: int.parse(jumlahAyam))
+          .createKandang(
+              nama: name,
+              lokasi: lokasi,
+              latitude: 0,
+              longitude: 0,
+              jumlahAyam: int.parse(jumlahAyam))
           .then((_) {
         if (provider.uploadResponse!.success) {
           provider.refreshKandang();

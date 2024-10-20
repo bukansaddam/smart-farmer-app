@@ -11,7 +11,6 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
-
   delayscreen() async {
     await Future.delayed(const Duration(seconds: 2));
     if (mounted) {

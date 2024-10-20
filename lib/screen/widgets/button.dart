@@ -42,8 +42,8 @@ class CustomButton extends StatelessWidget {
         child: Text(
           text,
           style: TextStyle(
-            color: gradient ? Colors.white : const Color(0xFF354A98),
-            fontSize: height * 0.4,
+            color: gradient ? Colors.white : const Color(0xFF4E6B3E),
+            fontSize: height * 0.35,
           ),
         ),
       ),

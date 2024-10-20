@@ -13,7 +13,7 @@ class DetailKandangProvider extends ChangeNotifier {
     required this.apiService,
     required this.authRepository,
     required this.idKandang,
-  }){
+  }) {
     getDetailKandang(idKandang: idKandang);
   }
 

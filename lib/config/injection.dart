@@ -5,6 +5,7 @@ import 'package:smart_farmer_app/provider/auth_provider.dart';
 import 'package:smart_farmer_app/provider/home_provider.dart';
 import 'package:smart_farmer_app/provider/inventory_provider.dart';
 import 'package:smart_farmer_app/provider/kandang_provider.dart';
+import 'package:smart_farmer_app/provider/laporan_provider.dart';
 
 final locator = GetIt.instance;
 
@@ -20,6 +21,9 @@ void init() {
   );
   locator.registerLazySingleton<KandangProvider>(
     () => KandangProvider(apiService: locator(), authRepository: locator()),
+  );
+  locator.registerLazySingleton<LaporanProvider>(
+    () => LaporanProvider(apiService: locator(), authRepository: locator()),
   );
 
   locator.registerLazySingleton<ApiService>(() => ApiService());

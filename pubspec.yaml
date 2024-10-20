@@ -13,6 +13,7 @@ dependencies:
   contentsize_tabbarview: ^0.0.2
   cupertino_icons: ^1.0.8
   delightful_toast: ^1.1.0
+  easy_image_viewer: ^1.5.1
   fl_chart: ^0.69.0
   flutter:
     sdk: flutter
@@ -31,12 +32,12 @@ dependencies:
   sidebarx: ^0.17.1
 
 dev_dependencies:
+  build_runner: ^2.4.12
   flutter_lints: ^4.0.0
   flutter_test:
     sdk: flutter
-  json_serializable: ^6.8.0
   freezed: ^2.5.7
-  build_runner: ^2.4.12
+  json_serializable: ^6.8.0
 
 flutter:
   uses-material-design: true

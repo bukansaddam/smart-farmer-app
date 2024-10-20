@@ -58,7 +58,9 @@ class _DetailKandangScreenState extends State<DetailKandangScreen> {
               ),
               TextButton(
                 onPressed: () {
-                  _inventoryProvider.deleteKandang(idKandang: widget.idKandang).then((value) {
+                  _inventoryProvider
+                      .deleteKandang(idKandang: widget.idKandang)
+                      .then((value) {
                     if (_inventoryProvider.uploadResponse!.success) {
                       context.pop();
                       _inventoryProvider.refreshKandang();
@@ -80,6 +82,7 @@ class _DetailKandangScreenState extends State<DetailKandangScreen> {
         break;
     }
   }
+
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider<DetailKandangProvider>(

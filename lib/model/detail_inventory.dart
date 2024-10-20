@@ -1,5 +1,4 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'dart:convert';
 
 part 'detail_inventory.freezed.dart';
 part 'detail_inventory.g.dart';
@@ -30,7 +29,8 @@ class DetailInventory with _$DetailInventory {
     required List<InventoryImage> images,
   }) = _DetailInventory;
 
-  factory DetailInventory.fromJson(Map<String, dynamic> json) => _$DetailInventoryFromJson(json);
+  factory DetailInventory.fromJson(Map<String, dynamic> json) =>
+      _$DetailInventoryFromJson(json);
 }
 
 @freezed
@@ -40,5 +40,6 @@ class InventoryImage with _$InventoryImage {
     required String url,
   }) = _InventoryImage;
 
-  factory InventoryImage.fromJson(Map<String, dynamic> json) => _$InventoryImageFromJson(json);
+  factory InventoryImage.fromJson(Map<String, dynamic> json) =>
+      _$InventoryImageFromJson(json);
 }

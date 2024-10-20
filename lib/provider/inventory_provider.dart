@@ -119,7 +119,7 @@ class InventoryProvider extends ChangeNotifier {
     try {
       loadingState = const LoadingState.loading();
       notifyListeners();
-      
+
       final repository = await authRepository.getUser();
       final token = repository?.token;
 
@@ -187,7 +187,16 @@ class InventoryProvider extends ChangeNotifier {
         compressedImages.add(compressedBytes);
       }
 
-      uploadResponse = await apiService.updateInventory(token: token, id: idInventory, name: name, stock: stock, jenis:jenis, images: compressedImages, filenames: filenames, deletedImages: deletedImages,);
+      uploadResponse = await apiService.updateInventory(
+        token: token,
+        id: idInventory,
+        name: name,
+        stock: stock,
+        jenis: jenis,
+        images: compressedImages,
+        filenames: filenames,
+        deletedImages: deletedImages,
+      );
 
       if (uploadResponse!.success) {
         loadingState = const LoadingState.loaded();
@@ -203,7 +212,7 @@ class InventoryProvider extends ChangeNotifier {
   }
 
   Future<void> deleteInventory(String id) async {
-    try{
+    try {
       loadingState = const LoadingState.loading();
       notifyListeners();
 

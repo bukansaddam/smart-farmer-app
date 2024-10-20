@@ -5,6 +5,7 @@ import 'package:smart_farmer_app/provider/inventory_provider.dart';
 import 'package:smart_farmer_app/screen/pemilik/dashboard_pemilik_screen.dart';
 import 'package:smart_farmer_app/screen/pemilik/inventory/inventory_screen.dart';
 import 'package:smart_farmer_app/screen/pemilik/kandang/kandang_screen.dart';
+import 'package:smart_farmer_app/screen/pemilik/laporan/laporan_screen.dart';
 import 'package:smart_farmer_app/screen/widgets/item_drawer.dart';
 
 class HomePemilikScreen extends StatefulWidget {
@@ -43,7 +44,7 @@ class _HomePemilikScreenState extends State<HomePemilikScreen> {
     DashboardPemilikScreen(),
     KandangScreen(),
     Text('Home Pemilik'),
-    Text('Inventory'),
+    LaporanScreen(),
     InventoryScreen(
       category: 'Pakan',
     ),

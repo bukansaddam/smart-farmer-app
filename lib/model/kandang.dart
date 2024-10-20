@@ -1,5 +1,4 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'dart:convert';
 
 part 'kandang.freezed.dart';
 part 'kandang.g.dart';
@@ -24,7 +23,8 @@ class KandangResult with _$KandangResult {
     required List<Kandang> data,
   }) = _KandangResult;
 
-  factory KandangResult.fromJson(Map<String, dynamic> json) => _$KandangResultFromJson(json);
+  factory KandangResult.fromJson(Map<String, dynamic> json) =>
+      _$KandangResultFromJson(json);
 }
 
 @freezed
@@ -39,7 +39,8 @@ class Kandang with _$Kandang {
     required List<KandangImage> images,
   }) = _Kandang;
 
-  factory Kandang.fromJson(Map<String, dynamic> json) => _$KandangFromJson(json);
+  factory Kandang.fromJson(Map<String, dynamic> json) =>
+      _$KandangFromJson(json);
 }
 
 @freezed
@@ -48,5 +49,6 @@ class KandangImage with _$KandangImage {
     required String url,
   }) = _KandangImage;
 
-  factory KandangImage.fromJson(Map<String, dynamic> json) => _$KandangImageFromJson(json);
+  factory KandangImage.fromJson(Map<String, dynamic> json) =>
+      _$KandangImageFromJson(json);
 }
