@@ -4,18 +4,20 @@ import 'package:flutter/material.dart';
 import 'package:smart_farmer_app/model/detail_inventory.dart';
 import 'package:smart_farmer_app/model/detail_kandang.dart';
 import 'package:smart_farmer_app/model/detail_laporan.dart';
+import 'package:smart_farmer_app/model/detail_petugas.dart';
 import 'package:smart_farmer_app/model/inventory.dart';
 import 'package:smart_farmer_app/model/kandang.dart';
 import 'package:smart_farmer_app/model/laporan.dart';
 import 'package:smart_farmer_app/model/login.dart';
+import 'package:smart_farmer_app/model/petugas.dart';
 import 'package:smart_farmer_app/model/register.dart';
 import 'package:http/http.dart' as http;
 import 'package:smart_farmer_app/model/upload.dart';
 
 class ApiService {
-  static const String baseUrl = 'http://192.168.1.3:3000';
-  static const String _login = '/auth';
-  static const String _register = '/auth';
+  static const String baseUrl = 'http://192.168.1.19:3000';
+  static const String _auth = '/auth';
+  static const String _user = '/user';
   static const String _inventory = '/inventory';
   static const String _kandang = '/kandang';
   static const String _laporan = '/laporan';
@@ -26,6 +28,8 @@ class ApiService {
   bool get isEmployee => actor == 'employee';
   bool get isCustomer => actor == 'customer';
 
+  /*--------------Auth--------------*/
+
   Future<RegisterResponse> register({
     required String email,
     required String password,
@@ -33,7 +37,7 @@ class ApiService {
     required String phone,
   }) async {
     final response = await http.post(
-      Uri.parse('$baseUrl$_register/signup'),
+      Uri.parse('$baseUrl$_auth/signup'),
       body: jsonEncode(<String, String>{
         'email': email,
         'password': password,
@@ -47,10 +51,8 @@ class ApiService {
     );
 
     if (response.statusCode == 200) {
-      debugPrint(response.body);
       return RegisterResponse.fromJson(jsonDecode(response.body));
     } else {
-      debugPrint(response.body);
       return RegisterResponse.fromJson(jsonDecode(response.body));
     }
   }
@@ -60,7 +62,7 @@ class ApiService {
     required String password,
   }) async {
     final response = await http.post(
-      Uri.parse('$baseUrl$_login/signin'),
+      Uri.parse('$baseUrl$_auth/signin'),
       body: jsonEncode(<String, String>{
         'email': email,
         'password': password,
@@ -76,6 +78,40 @@ class ApiService {
       return LoginResponse.fromJson(jsonDecode(response.body));
     }
   }
+
+  Future<RegisterResponse> registerPetugas({
+    required String name,
+    required String email,
+    required String password,
+    required String kodePemilik,
+    required String phone,
+  }) async {
+    final response = await http.post(
+      Uri.parse('$baseUrl$_auth/signup'),
+      body: jsonEncode(<String, String>{
+        'email': email,
+        'password': password,
+        'nama': name,
+        'role': 'petugas',
+        'phone': phone,
+        'kode_pemilik': kodePemilik,
+      }),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      return RegisterResponse.fromJson(jsonDecode(response.body));
+    } else {
+      debugPrint(response.body);
+      return RegisterResponse.fromJson(jsonDecode(response.body));
+    }
+  }
+
+  /*--------------Auth--------------*/
+
+  /*--------------Inventory--------------*/
 
   Future<InventoryResponse> getInventory({
     required String token,
@@ -252,6 +288,10 @@ class ApiService {
     }
   }
 
+  /*--------------Inventory--------------*/
+
+  /*--------------Kandang--------------*/
+
   Future<KandangResponse> getKandang({
     required String token,
     String nama = '',
@@ -370,9 +410,8 @@ class ApiService {
     if (longitude != null) request.fields['longitude'] = longitude.toString();
     if (jumlahAyam != null)
       request.fields['jumlah_ayam'] = jumlahAyam.toString();
-    if (deletedImages != null) {
+    if (deletedImages != null)
       request.fields['deletedImagesId'] = deletedImages.join(',');
-    }
 
     request.headers.addAll({
       'Content-Type': 'multipart/form-data',
@@ -407,6 +446,10 @@ class ApiService {
       return UploadResponse.fromJson(jsonDecode(response.body));
     }
   }
+
+  /*--------------Kandang--------------*/
+
+  /*--------------Laporan--------------*/
 
   Future<LaporanResponse> getAllLaporan({
     required String token,
@@ -478,4 +521,53 @@ class ApiService {
       return UploadResponse.fromJson(jsonDecode(response.body));
     }
   }
+
+  /*--------------Laporan--------------*/
+
+  /*--------------Petugas--------------*/
+
+  Future<PetugasResponse> getAllPetugas({
+    required String token,
+    String nama = '',
+    int page = 1,
+    int pageSize = 10,
+  }) async {
+    final response = await http.get(
+      Uri.parse(
+          '$baseUrl$_user/petugas?page=$page&pageSize=$pageSize&nama=$nama'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Authorization': 'Bearer $token',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      debugPrint(response.body);
+      return PetugasResponse.fromJson(jsonDecode(response.body));
+    } else {
+      debugPrint(response.body);
+      return PetugasResponse.fromJson(jsonDecode(response.body));
+    }
+  }
+
+  Future<DetailPetugasResponse> getDetailPetugas({
+    required String token,
+    required String idPetugas,
+  }) async {
+    final response = await http.get(
+      Uri.parse('$baseUrl$_user/petugas/$idPetugas'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Authorization': 'Bearer $token',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      return DetailPetugasResponse.fromJson(jsonDecode(response.body));
+    } else {
+      return DetailPetugasResponse.fromJson(jsonDecode(response.body));
+    }
+  }
+
+  /*--------------Petugas--------------*/
 }

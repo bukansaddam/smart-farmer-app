@@ -8,6 +8,7 @@ import 'package:smart_farmer_app/provider/home_provider.dart';
 import 'package:smart_farmer_app/provider/inventory_provider.dart';
 import 'package:smart_farmer_app/provider/kandang_provider.dart';
 import 'package:smart_farmer_app/provider/laporan_provider.dart';
+import 'package:smart_farmer_app/provider/petugas_provider.dart';
 import 'package:smart_farmer_app/screen/auth/register_screen.dart';
 import 'package:smart_farmer_app/screen/pemilik/inventory/add_inventory_screen.dart';
 import 'package:smart_farmer_app/screen/pemilik/inventory/detail_inventory_screen.dart';
@@ -18,6 +19,7 @@ import 'package:smart_farmer_app/screen/pemilik/kandang/add_kandang_screen.dart'
 import 'package:smart_farmer_app/screen/pemilik/kandang/detail_kandang_screen.dart';
 import 'package:smart_farmer_app/screen/pemilik/kandang/edit_kandang_screen.dart';
 import 'package:smart_farmer_app/screen/pemilik/laporan/detail_laporan_screen.dart';
+import 'package:smart_farmer_app/screen/pemilik/petugas/detail_petugas_screen.dart';
 import 'package:smart_farmer_app/screen/splash_screen.dart';
 import '../config/injection.dart' as di;
 
@@ -48,6 +50,9 @@ class PemilikApp extends StatelessWidget {
         ),
         ChangeNotifierProvider(
           create: (context) => di.locator<LaporanProvider>(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => di.locator<PetugasProvider>(),
         ),
       ],
       child: MaterialApp.router(
@@ -187,6 +192,15 @@ class PemilikApp extends StatelessWidget {
                 idLaporan: extraId,
                 kategori: extraKategori,
               );
+            },
+          ),
+          GoRoute(
+            path: 'detail_petugas',
+            name: 'detail_petugas',
+            builder: (context, state) {
+              String extraId =
+                  (state.extra as Map<String, dynamic>)['idPetugas'] as String;
+              return DetailPetugasScreen(idPetugas: extraId);
             },
           )
         ],
