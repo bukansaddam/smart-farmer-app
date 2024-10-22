@@ -44,7 +44,7 @@ class ApiService {
         'email': email,
         'password': password,
         'nama': name,
-        'role': 'pemilik',
+        'role': isPemilik ? 'pemilik' : 'investor',
         'phone': phone,
       }),
       headers: <String, String>{
@@ -127,7 +127,7 @@ class ApiService {
         ? '$baseUrl$_inventory/kandang/$idKandang?page=$page&pageSize=$pageSize&jenis=$jenis&name=$name'
         : isPetugas
             ? '$baseUrl$_inventory/petugas?page=$page&pageSize=$pageSize&jenis=$jenis&name=$name'
-            : '$baseUrl$_inventory/investor/$idKandang?page=$page&pageSize=$pageSize&jenis=$jenis&name=$name';
+            : '$baseUrl$_inventory/kandang/$idKandang?page=$page&pageSize=$pageSize&jenis=$jenis&name=$name';
     final response = await http.get(
       Uri.parse(url),
       headers: <String, String>{
@@ -304,8 +304,13 @@ class ApiService {
     page = 1,
     pageSize = 10,
   }) async {
+    String url = isPemilik
+        ? '$baseUrl$_kandang?page=$page&pageSize=$pageSize&nama=$nama'
+        : isPetugas
+            ? '$baseUrl$_kandang/petugas?page=$page&pageSize=$pageSize&nama=$nama'
+            : '$baseUrl$_kandang/investor?page=$page&pageSize=$pageSize&nama=$nama';
     final response = await http.get(
-      Uri.parse('$baseUrl$_kandang?page=$page&pageSize=$pageSize&nama=$nama'),
+      Uri.parse(url),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
         'Authorization': 'Bearer $token',

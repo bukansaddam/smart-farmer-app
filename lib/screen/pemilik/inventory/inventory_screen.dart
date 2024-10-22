@@ -38,14 +38,14 @@ class _InventoryScreenState extends State<InventoryScreen> {
   void initState() {
     super.initState();
     final inventoryProvider = context.read<InventoryProvider>();
-    if (isOwner) {
+    if (!isEmployee) {
       kandangProvider = context.read<KandangProvider>();
     }
 
     selectedCategory = category.first;
 
     Future.microtask(() async {
-      if (isOwner) {
+      if (!isEmployee) {
         await kandangProvider.refreshKandang().then(
           (value) {
             if (kandangProvider.kandangResponse != null) {
@@ -58,7 +58,7 @@ class _InventoryScreenState extends State<InventoryScreen> {
         );
       }
       await inventoryProvider.refreshInventory(
-          idKandang: isOwner ? kandangProvider.selectedKandang!.id : '',
+          idKandang: !isEmployee ? kandangProvider.selectedKandang!.id : '',
           category:
               widget.category == 'Pakan' ? selectedCategory : widget.category);
     });
@@ -68,7 +68,7 @@ class _InventoryScreenState extends State<InventoryScreen> {
           _scrollController.position.maxScrollExtent) {
         if (inventoryProvider.pageItems != null) {
           inventoryProvider.getAllInventory(
-              idKandang: isOwner ? kandangProvider.selectedKandang!.id : '',
+              idKandang: !isEmployee ? kandangProvider.selectedKandang!.id : '',
               category: widget.category == 'Pakan'
                   ? selectedCategory
                   : widget.category);
@@ -89,7 +89,7 @@ class _InventoryScreenState extends State<InventoryScreen> {
     if (_debounce?.isActive ?? false) _debounce?.cancel();
     _debounce = Timer(const Duration(milliseconds: 1000), () {
       context.read<InventoryProvider>().refreshInventory(
-            idKandang: isOwner ? kandangProvider.selectedKandang!.id : '',
+            idKandang: !isEmployee ? kandangProvider.selectedKandang!.id : '',
             searchValue: query,
             category:
                 widget.category == 'Pakan' ? selectedCategory : widget.category,
@@ -105,7 +105,7 @@ class _InventoryScreenState extends State<InventoryScreen> {
           return _buildDetail(inventoryProvider, kandangProvider);
         },
       ),
-      floatingActionButton: isOwner ? _buildFAB() : null,
+      floatingActionButton: !isEmployee ? _buildFAB() : null,
     );
   }
 
@@ -167,7 +167,7 @@ class _InventoryScreenState extends State<InventoryScreen> {
                         ),
                       )
                     : const SizedBox(),
-                if (isOwner)
+                if (!isEmployee)
                   InkWell(
                     onTap: () => _buildBottomSheet(
                         context, context.read<KandangProvider>()),
@@ -239,7 +239,7 @@ class _InventoryScreenState extends State<InventoryScreen> {
         return RefreshIndicator(
           onRefresh: () async {
             await context.read<InventoryProvider>().refreshInventory(
-                  idKandang: isOwner ? kandangProvider.selectedKandang!.id : '',
+                  idKandang: !isEmployee ? kandangProvider.selectedKandang!.id : '',
                   category: widget.category == 'Pakan'
                       ? selectedCategory
                       : widget.category,
@@ -273,7 +273,7 @@ class _InventoryScreenState extends State<InventoryScreen> {
                   }, extra: {
                     'category': widget.category,
                     'idKandang':
-                        isOwner ? kandangProvider.selectedKandang!.id : '',
+                        !isEmployee ? kandangProvider.selectedKandang!.id : '',
                   });
                 },
                 child: Column(

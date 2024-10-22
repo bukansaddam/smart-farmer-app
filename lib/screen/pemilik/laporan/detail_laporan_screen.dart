@@ -511,10 +511,7 @@ class _DetailLaporanScreenState extends State<DetailLaporanScreen> {
                             .then((value) {
                           if (provider.uploadResponse!.success) {
                             provider.getDetailLaporan(id: widget.idLaporan);
-                            ToastMessage.show(context, 'Laporan diterima');
                           }
-                        }).catchError((e) {
-                          ToastMessage.show(context, e.toString());
                         });
                         context.pop();
                       },

@@ -4,22 +4,19 @@ import 'package:provider/provider.dart';
 import 'package:smart_farmer_app/provider/home_provider.dart';
 import 'package:smart_farmer_app/provider/inventory_provider.dart';
 import 'package:smart_farmer_app/provider/kandang_provider.dart';
-import 'package:smart_farmer_app/screen/pemilik/dashboard_pemilik_screen.dart';
+import 'package:smart_farmer_app/screen/investor/dashboard_investor_screen.dart';
 import 'package:smart_farmer_app/screen/pemilik/inventory/inventory_screen.dart';
-import 'package:smart_farmer_app/screen/pemilik/kandang/kandang_screen.dart';
-import 'package:smart_farmer_app/screen/pemilik/laporan/laporan_screen.dart';
-import 'package:smart_farmer_app/screen/pemilik/petugas/petugas_screen.dart';
 import 'package:smart_farmer_app/screen/widgets/alert_dialog.dart';
 import 'package:smart_farmer_app/screen/widgets/item_drawer.dart';
 
-class HomePemilikScreen extends StatefulWidget {
-  const HomePemilikScreen({super.key});
+class HomeInvestorScreen extends StatefulWidget {
+  const HomeInvestorScreen({super.key});
 
   @override
-  State<HomePemilikScreen> createState() => _HomePemilikScreenState();
+  State<HomeInvestorScreen> createState() => _HomeInvestorScreenState();
 }
 
-class _HomePemilikScreenState extends State<HomePemilikScreen> {
+class _HomeInvestorScreenState extends State<HomeInvestorScreen> {
   late int _selectedIndex;
   String _title = 'Dashboard';
 
@@ -53,10 +50,10 @@ class _HomePemilikScreenState extends State<HomePemilikScreen> {
 
   void _onItemTapped(int index) {
     context.read<HomeProvider>().onItemTapped(index);
-    if (index >= 4 && index <= 6) {
-      final category = index == 4
+    if (index >= 1 && index <= 3) {
+      final category = index == 1
           ? 'Pakan'
-          : index == 5
+          : index == 2
               ? 'Vitamin'
               : 'Disinfektan';
       context.read<InventoryProvider>().refreshInventory(
@@ -67,10 +64,7 @@ class _HomePemilikScreenState extends State<HomePemilikScreen> {
   }
 
   static const List<Widget> _widgetOptions = <Widget>[
-    DashboardPemilikScreen(),
-    KandangScreen(),
-    PetugasScreen(),
-    LaporanScreen(),
+    DashboardInvestorScreen(),
     InventoryScreen(
       category: 'Pakan',
     ),
@@ -101,39 +95,6 @@ class _HomePemilikScreenState extends State<HomePemilikScreen> {
                 _onItemTapped(0);
               },
             ),
-            ItemDrawer(
-              icon: Icons.house,
-              title: 'Kandang',
-              selected: _selectedIndex == 1,
-              onTap: () {
-                setState(() {
-                  _title = 'Kandang';
-                });
-                _onItemTapped(1);
-              },
-            ),
-            ItemDrawer(
-              icon: Icons.people,
-              title: 'Petugas',
-              selected: _selectedIndex == 2,
-              onTap: () {
-                setState(() {
-                  _title = 'Petugas';
-                });
-                _onItemTapped(2);
-              },
-            ),
-            ItemDrawer(
-              icon: Icons.assignment,
-              title: 'Laporan',
-              selected: _selectedIndex == 3,
-              onTap: () {
-                setState(() {
-                  _title = 'Laporan';
-                });
-                _onItemTapped(3);
-              },
-            ),
             ExpansionTile(
               leading: const Icon(Icons.storage),
               title: const Text('Inventory'),
@@ -145,34 +106,34 @@ class _HomePemilikScreenState extends State<HomePemilikScreen> {
                 ItemDrawer(
                   iconSvg: 'assets/icons/pakan.svg',
                   title: 'Pakan',
-                  selected: _selectedIndex == 4,
+                  selected: _selectedIndex == 1,
                   onTap: () {
                     setState(() {
                       _title = 'Inventory';
                     });
-                    _onItemTapped(4);
+                    _onItemTapped(1);
                   },
                 ),
                 ItemDrawer(
                   iconSvg: 'assets/icons/vitamin.svg',
                   title: 'Vitamin',
-                  selected: _selectedIndex == 5,
+                  selected: _selectedIndex == 2,
                   onTap: () {
                     setState(() {
                       _title = 'Inventory';
                     });
-                    _onItemTapped(5);
+                    _onItemTapped(2);
                   },
                 ),
                 ItemDrawer(
                   iconSvg: 'assets/icons/disinfektan.svg',
                   title: 'Disinfektan',
-                  selected: _selectedIndex == 6,
+                  selected: _selectedIndex == 3,
                   onTap: () {
                     setState(() {
                       _title = 'Inventory';
                     });
-                    _onItemTapped(6);
+                    _onItemTapped(3);
                   },
                 ),
               ],
@@ -181,15 +142,15 @@ class _HomePemilikScreenState extends State<HomePemilikScreen> {
         ),
       ),
       appBar: AppBar(
-        title: _selectedIndex == 4 || _selectedIndex == 5 || _selectedIndex == 6
+        title: _selectedIndex == 1 || _selectedIndex == 2 || _selectedIndex == 3
             ? Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Text(_title),
                   Text(
-                      _selectedIndex == 4
+                      _selectedIndex == 1
                           ? 'Pakan'
-                          : _selectedIndex == 5
+                          : _selectedIndex == 2
                               ? 'Vitamin'
                               : 'Disinfektan',
                       style: const TextStyle(
