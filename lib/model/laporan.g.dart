@@ -44,6 +44,7 @@ _$LaporanImpl _$$LaporanImplFromJson(Map<String, dynamic> json) =>
       jenis: json['jenis'] as String,
       kandang: json['kandang'] as String,
       tanggal: DateTime.parse(json['tanggal'] as String),
+      status: json['status'] as String,
     );
 
 Map<String, dynamic> _$$LaporanImplToJson(_$LaporanImpl instance) =>
@@ -52,4 +53,5 @@ Map<String, dynamic> _$$LaporanImplToJson(_$LaporanImpl instance) =>
       'jenis': instance.jenis,
       'kandang': instance.kandang,
       'tanggal': instance.tanggal.toIso8601String(),
+      'status': instance.status,
     };

@@ -421,6 +421,7 @@ mixin _$Laporan {
   String get jenis => throw _privateConstructorUsedError;
   String get kandang => throw _privateConstructorUsedError;
   DateTime get tanggal => throw _privateConstructorUsedError;
+  String get status => throw _privateConstructorUsedError;
 
   /// Serializes this Laporan to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -436,7 +437,12 @@ abstract class $LaporanCopyWith<$Res> {
   factory $LaporanCopyWith(Laporan value, $Res Function(Laporan) then) =
       _$LaporanCopyWithImpl<$Res, Laporan>;
   @useResult
-  $Res call({String idLaporan, String jenis, String kandang, DateTime tanggal});
+  $Res call(
+      {String idLaporan,
+      String jenis,
+      String kandang,
+      DateTime tanggal,
+      String status});
 }
 
 /// @nodoc
@@ -458,6 +464,7 @@ class _$LaporanCopyWithImpl<$Res, $Val extends Laporan>
     Object? jenis = null,
     Object? kandang = null,
     Object? tanggal = null,
+    Object? status = null,
   }) {
     return _then(_value.copyWith(
       idLaporan: null == idLaporan
@@ -476,6 +483,10 @@ class _$LaporanCopyWithImpl<$Res, $Val extends Laporan>
           ? _value.tanggal
           : tanggal // ignore: cast_nullable_to_non_nullable
               as DateTime,
+      status: null == status
+          ? _value.status
+          : status // ignore: cast_nullable_to_non_nullable
+              as String,
     ) as $Val);
   }
 }
@@ -487,7 +498,12 @@ abstract class _$$LaporanImplCopyWith<$Res> implements $LaporanCopyWith<$Res> {
       __$$LaporanImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String idLaporan, String jenis, String kandang, DateTime tanggal});
+  $Res call(
+      {String idLaporan,
+      String jenis,
+      String kandang,
+      DateTime tanggal,
+      String status});
 }
 
 /// @nodoc
@@ -507,6 +523,7 @@ class __$$LaporanImplCopyWithImpl<$Res>
     Object? jenis = null,
     Object? kandang = null,
     Object? tanggal = null,
+    Object? status = null,
   }) {
     return _then(_$LaporanImpl(
       idLaporan: null == idLaporan
@@ -525,6 +542,10 @@ class __$$LaporanImplCopyWithImpl<$Res>
           ? _value.tanggal
           : tanggal // ignore: cast_nullable_to_non_nullable
               as DateTime,
+      status: null == status
+          ? _value.status
+          : status // ignore: cast_nullable_to_non_nullable
+              as String,
     ));
   }
 }
@@ -536,7 +557,8 @@ class _$LaporanImpl implements _Laporan {
       {required this.idLaporan,
       required this.jenis,
       required this.kandang,
-      required this.tanggal});
+      required this.tanggal,
+      required this.status});
 
   factory _$LaporanImpl.fromJson(Map<String, dynamic> json) =>
       _$$LaporanImplFromJson(json);
@@ -549,10 +571,12 @@ class _$LaporanImpl implements _Laporan {
   final String kandang;
   @override
   final DateTime tanggal;
+  @override
+  final String status;
 
   @override
   String toString() {
-    return 'Laporan(idLaporan: $idLaporan, jenis: $jenis, kandang: $kandang, tanggal: $tanggal)';
+    return 'Laporan(idLaporan: $idLaporan, jenis: $jenis, kandang: $kandang, tanggal: $tanggal, status: $status)';
   }
 
   @override
@@ -564,13 +588,14 @@ class _$LaporanImpl implements _Laporan {
                 other.idLaporan == idLaporan) &&
             (identical(other.jenis, jenis) || other.jenis == jenis) &&
             (identical(other.kandang, kandang) || other.kandang == kandang) &&
-            (identical(other.tanggal, tanggal) || other.tanggal == tanggal));
+            (identical(other.tanggal, tanggal) || other.tanggal == tanggal) &&
+            (identical(other.status, status) || other.status == status));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode =>
-      Object.hash(runtimeType, idLaporan, jenis, kandang, tanggal);
+      Object.hash(runtimeType, idLaporan, jenis, kandang, tanggal, status);
 
   /// Create a copy of Laporan
   /// with the given fields replaced by the non-null parameter values.
@@ -593,7 +618,8 @@ abstract class _Laporan implements Laporan {
       {required final String idLaporan,
       required final String jenis,
       required final String kandang,
-      required final DateTime tanggal}) = _$LaporanImpl;
+      required final DateTime tanggal,
+      required final String status}) = _$LaporanImpl;
 
   factory _Laporan.fromJson(Map<String, dynamic> json) = _$LaporanImpl.fromJson;
 
@@ -605,6 +631,8 @@ abstract class _Laporan implements Laporan {
   String get kandang;
   @override
   DateTime get tanggal;
+  @override
+  String get status;
 
   /// Create a copy of Laporan
   /// with the given fields replaced by the non-null parameter values.

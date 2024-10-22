@@ -38,7 +38,7 @@ class _MySearchBarState extends State<MySearchBar> {
           borderSide: BorderSide.none,
         ),
         filled: true,
-        fillColor: const Color(0xFFF3F5F9),
+        fillColor: const Color(0xFFE9ECF2),
       ),
       onChanged: widget.onChanged,
       autocorrect: false,

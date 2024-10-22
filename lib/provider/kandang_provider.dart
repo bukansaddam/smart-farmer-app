@@ -8,6 +8,7 @@ import 'package:smart_farmer_app/data/api/api_service.dart';
 import 'package:smart_farmer_app/data/local/auth_repository.dart';
 import 'package:smart_farmer_app/model/detail_kandang.dart';
 import 'package:smart_farmer_app/model/kandang.dart';
+import 'package:smart_farmer_app/model/kandang_petugas.dart';
 import 'package:smart_farmer_app/model/upload.dart';
 
 class KandangProvider extends ChangeNotifier {
@@ -22,6 +23,7 @@ class KandangProvider extends ChangeNotifier {
   KandangResponse? kandangResponse;
   LoadingState loadingState = const LoadingState.initial();
   UploadResponse? uploadResponse;
+  KandangPetugasResponse? kandangPetugasResponse;
 
   int? pageItems = 1;
   int sizeItems = 10;
@@ -157,6 +159,37 @@ class KandangProvider extends ChangeNotifier {
         notifyListeners();
       } else {
         loadingState = LoadingState.error(uploadResponse!.message);
+        notifyListeners();
+      }
+    } catch (error) {
+      loadingState = LoadingState.error(error.toString());
+      notifyListeners();
+    }
+  }
+
+  Future<void> getKandangByPetugas() async {
+    try{
+      loadingState = const LoadingState.loading();
+      notifyListeners();
+
+      final repository = await authRepository.getUser();
+      final token = repository?.token;
+
+      if (token == null) {
+        loadingState = const LoadingState.error('Token is null');
+        notifyListeners();
+        return;
+      }
+
+      kandangPetugasResponse = await apiService.getKandangByPetugas(
+        token: token,
+      );
+
+      if (kandangPetugasResponse!.success) {
+        loadingState = const LoadingState.loaded();
+        notifyListeners();
+      } else {
+        loadingState = LoadingState.error(kandangPetugasResponse!.message);
         notifyListeners();
       }
     } catch (error) {

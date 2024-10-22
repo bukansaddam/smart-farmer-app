@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:smart_farmer_app/provider/home_provider.dart';
 import 'package:smart_farmer_app/provider/inventory_provider.dart';
 import 'package:smart_farmer_app/screen/pemilik/inventory/inventory_screen.dart';
+import 'package:smart_farmer_app/screen/pemilik/laporan/laporan_screen.dart';
+import 'package:smart_farmer_app/screen/petugas/dashboard_petugas_screen.dart';
+import 'package:smart_farmer_app/screen/widgets/alert_dialog.dart';
 import 'package:smart_farmer_app/screen/widgets/item_drawer.dart';
 
 class HomePetugasScreen extends StatefulWidget {
@@ -38,12 +42,8 @@ class _HomePetugasScreenState extends State<HomePetugasScreen> {
   }
 
   static const List<Widget> _widgetOptions = <Widget>[
-    Text(
-      'Index 0: Dashboard',
-    ),
-    Text(
-      'Index 1: Riwayat',
-    ),
+    DashboardPetugasScreen(),
+    LaporanScreen(),
     InventoryScreen(
       category: 'Pakan',
     ),
@@ -76,11 +76,11 @@ class _HomePetugasScreenState extends State<HomePetugasScreen> {
             ),
             ItemDrawer(
               icon: Icons.history,
-              title: 'Riwayat Laporan',
+              title: 'Laporan',
               selected: _selectedIndex == 1,
               onTap: () {
                 setState(() {
-                  _title = 'Riwayat Laporan';
+                  _title = 'Laporan';
                 });
                 _onItemTapped(1);
               },
@@ -138,18 +138,56 @@ class _HomePetugasScreenState extends State<HomePetugasScreen> {
                 children: [
                   Text(_title),
                   Text(
-                      _selectedIndex == 2
-                          ? 'Pakan'
-                          : _selectedIndex == 3
-                              ? 'Vitamin'
-                              : 'Disinfektan',
-                      style: const TextStyle(
-                          fontSize: 12, fontWeight: FontWeight.normal)),
+                    _selectedIndex == 2
+                        ? 'Pakan'
+                        : _selectedIndex == 3
+                            ? 'Vitamin'
+                            : 'Disinfektan',
+                    style: const TextStyle(
+                        fontSize: 12, fontWeight: FontWeight.normal),
+                  ),
                 ],
               )
             : Text(_title),
         elevation: 0,
         iconTheme: const IconThemeData(color: Colors.black),
+        actions: _selectedIndex == 0
+            ? [
+                PopupMenuButton(
+                  color: Colors.white,
+                  itemBuilder: (context) {
+                    return [
+                      PopupMenuItem(
+                        value: 'logout',
+                        onTap: () {
+                          showDialog(
+                            context: context,
+                            builder: (context) {
+                              return MyAlertDialog(
+                                title: 'Logout',
+                                description: 'Apakah anda yakin ingin logout?',
+                                msgAccept: 'Ya',
+                                onAccept: () {
+                                  context.read<HomeProvider>().logout();
+                                  context.pop();
+                                  context.goNamed('login');
+                                },
+                                msgCancel: 'Tidak',
+                                onCancel: () {
+                                  context.pop();
+                                },
+                              );
+                            },
+                          );
+                        },
+                        child: const Text('Logout',
+                            style: TextStyle(color: Colors.red)),
+                      ),
+                    ];
+                  },
+                ),
+              ]
+            : null,
       ),
       body: SafeArea(
         child: _widgetOptions[_selectedIndex],

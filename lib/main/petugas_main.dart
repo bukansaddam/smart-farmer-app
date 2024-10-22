@@ -6,11 +6,16 @@ import 'package:smart_farmer_app/provider/auth_provider.dart';
 import 'package:smart_farmer_app/provider/home_provider.dart';
 import 'package:smart_farmer_app/provider/inventory_provider.dart';
 import 'package:smart_farmer_app/provider/kandang_provider.dart';
+import 'package:smart_farmer_app/provider/laporan_provider.dart';
 import 'package:smart_farmer_app/screen/auth/login_screen.dart';
 import 'package:smart_farmer_app/screen/auth/register_screen.dart';
 import 'package:smart_farmer_app/screen/home_petugas_screen.dart';
 import 'package:smart_farmer_app/screen/pemilik/inventory/detail_inventory_screen.dart';
 import 'package:smart_farmer_app/screen/pemilik/inventory/edit_inventory_screen.dart';
+import 'package:smart_farmer_app/screen/pemilik/laporan/detail_laporan_screen.dart';
+import 'package:smart_farmer_app/screen/petugas/laporan/add_laporan_kematian_screen.dart';
+import 'package:smart_farmer_app/screen/petugas/laporan/add_laporan_pedaging_screen.dart';
+import 'package:smart_farmer_app/screen/petugas/laporan/add_laporan_telur_screen.dart';
 import 'package:smart_farmer_app/screen/splash_screen.dart';
 
 import '../config/injection.dart' as di;
@@ -39,6 +44,9 @@ class PetugasApp extends StatelessWidget {
         ),
         ChangeNotifierProvider(
           create: (context) => di.locator<KandangProvider>(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => di.locator<LaporanProvider>(),
         ),
       ],
       child: MaterialApp.router(
@@ -86,41 +94,91 @@ class PetugasApp extends StatelessWidget {
         builder: (context, state) => const HomePetugasScreen(),
         routes: [
           GoRoute(
-                path: 'detail_inventory/:id',
-                name: 'detail_inventory',
+            path: 'detail_inventory/:id',
+            name: 'detail_inventory',
+            builder: (context, state) {
+              String extraCategory =
+                  (state.extra as Map<String, dynamic>)['category'] as String;
+              String extraIdKandang =
+                  (state.extra as Map<String, dynamic>)['idKandang'] as String;
+              debugPrint('extra: ${state.extra}');
+              return DetailInventoryScreen(
+                id: state.pathParameters['id']!,
+                category: extraCategory,
+                kandangId: extraIdKandang,
+              );
+            },
+            routes: [
+              GoRoute(
+                path: 'edit_inventory',
+                name: 'edit_inventory',
                 builder: (context, state) {
                   String extraCategory = (state.extra
                       as Map<String, dynamic>)['category'] as String;
+                  DetailInventory detailInventory =
+                      (state.extra as Map<String, dynamic>)['detailInventory']
+                          as DetailInventory;
                   String extraIdKandang = (state.extra
                       as Map<String, dynamic>)['idKandang'] as String;
-                  debugPrint('extra: ${state.extra}');
-                  return DetailInventoryScreen(
-                    id: state.pathParameters['id']!,
+                  return EditInventoryScreen(
+                    idKandang: extraIdKandang,
+                    idInventory: state.pathParameters['id']!,
                     category: extraCategory,
-                    kandangId: extraIdKandang,
+                    detailInventory: detailInventory,
                   );
                 },
-                routes: [
-                  GoRoute(
-                      path: 'edit_inventory',
-                      name: 'edit_inventory',
-                      builder: (context, state) {
-                        String extraCategory = (state.extra
-                            as Map<String, dynamic>)['category'] as String;
-                        DetailInventory detailInventory = (state.extra
-                                as Map<String, dynamic>)['detailInventory']
-                            as DetailInventory;
-                        String extraIdKandang = (state.extra
-                            as Map<String, dynamic>)['idKandang'] as String;
-                        return EditInventoryScreen(
-                          idKandang: extraIdKandang,
-                          idInventory: state.pathParameters['id']!,
-                          category: extraCategory,
-                          detailInventory: detailInventory,
-                        );
-                      }),
-                ]),
-        ]
+              ),
+            ],
+          ),
+          GoRoute(
+            path: 'add_laporan_kematian',
+            name: 'add_laporan_kematian',
+            builder: (context, state) {
+              String extraId =
+                  (state.extra as Map<String, dynamic>)['idKandang'] as String;
+              return AddLaporanKematianScreen(extraId: extraId);
+            },
+          ),
+          GoRoute(
+            path: 'add_laporan_telur',
+            name: 'add_laporan_telur',
+            builder: (context, state) {
+              String extraId =
+                  (state.extra as Map<String, dynamic>)['idKandang'] as String;
+              String extraTotal =
+                  (state.extra as Map<String, dynamic>)['totalAyam'] as String;
+              return AddLaporanTelurScreen(
+                extraId: extraId,
+                totalAyam: extraTotal,
+              );
+            },
+          ),
+          GoRoute(
+            path: 'add_laporan_pedaging',
+            name: 'add_laporan_pedaging',
+            builder: (context, state) {
+              String extraId =
+                  (state.extra as Map<String, dynamic>)['idKandang'] as String;
+              return AddLaporanPedagingScreen(
+                extraId: extraId,
+              );
+            },
+          ),
+          GoRoute(
+            path: 'detail_laporan',
+            name: 'detail_laporan',
+            builder: (context, state) {
+              String extraId =
+                  (state.extra as Map<String, dynamic>)['idLaporan'] as String;
+              String extraKategori =
+                  (state.extra as Map<String, dynamic>)['kategori'] as String;
+              return DetailLaporanScreen(
+                idLaporan: extraId,
+                kategori: extraKategori,
+              );
+            },
+          ),
+        ],
       ),
     ],
   );

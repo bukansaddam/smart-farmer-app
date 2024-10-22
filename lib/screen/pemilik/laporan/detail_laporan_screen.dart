@@ -10,6 +10,7 @@ import 'package:smart_farmer_app/provider/detail_laporan_provider.dart';
 import 'package:smart_farmer_app/screen/widgets/alert_dialog.dart';
 import 'package:smart_farmer_app/screen/widgets/button.dart';
 import 'package:smart_farmer_app/screen/widgets/text_field.dart';
+import 'package:smart_farmer_app/screen/widgets/toast_message.dart';
 
 class DetailLaporanScreen extends StatefulWidget {
   const DetailLaporanScreen({
@@ -28,6 +29,11 @@ class DetailLaporanScreen extends StatefulWidget {
 class _DetailLaporanScreenState extends State<DetailLaporanScreen> {
   final _jumlahController = TextEditingController();
   final _ciriCiriController = TextEditingController();
+
+  final actor = const String.fromEnvironment('actor', defaultValue: 'pemilik');
+
+  bool get isOwner => actor == 'pemilik';
+  bool get isEmployee => actor == 'petugas';
 
   final List<String> ciriCiriList = [
     "Tidak Ada Gerakan atau Respon",
@@ -123,7 +129,7 @@ class _DetailLaporanScreenState extends State<DetailLaporanScreen> {
                 bottom: 20,
                 left: 0,
                 right: 0,
-                child: data.status == 'pending'
+                child: data.status == 'pending' && isOwner
                     ? _buildButtonConfirmation(provider)
                     : const SizedBox.shrink(),
               ),
@@ -143,6 +149,35 @@ class _DetailLaporanScreenState extends State<DetailLaporanScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        Container(
+          padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+          decoration: BoxDecoration(
+            color: data.status == 'pending'
+                ? const Color(0xFFC1C05C)
+                : data.status == 'approved'
+                    ? const Color(0xFF809577)
+                    : const Color(0xFFAD6466),
+            borderRadius: BorderRadius.circular(10),
+          ),
+          child: Row(
+            children: [
+              const Icon(Icons.info_outline, color: Colors.white),
+              const SizedBox(width: 8),
+              Text(
+                data.status == 'pending'
+                    ? 'Menunggu Konfirmasi'
+                    : data.status == 'approved'
+                        ? 'Disetujui'
+                        : 'Ditolak',
+                style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold),
+              ),
+            ],
+          ),
+        ),
+        const SizedBox(height: 16),
         const Text(
           'Tanggal',
           style: TextStyle(
@@ -306,7 +341,7 @@ class _DetailLaporanScreenState extends State<DetailLaporanScreen> {
         if (orientation == Orientation.landscape)
           Padding(
             padding: const EdgeInsets.only(top: 60, bottom: 20),
-            child: data.status == 'pending'
+            child: data.status == 'pending' && isOwner
                 ? _buildButtonConfirmation(provider)
                 : const SizedBox.shrink(),
           )
@@ -324,7 +359,7 @@ class _DetailLaporanScreenState extends State<DetailLaporanScreen> {
         if (orientation == Orientation.landscape)
           Padding(
             padding: const EdgeInsets.only(top: 60, bottom: 25),
-            child: data.status == 'pending'
+            child: data.status == 'pending' && isOwner
                 ? _buildButtonConfirmation(provider)
                 : const SizedBox.shrink(),
           )
@@ -383,7 +418,7 @@ class _DetailLaporanScreenState extends State<DetailLaporanScreen> {
         if (orientation == Orientation.landscape)
           Padding(
             padding: const EdgeInsets.only(top: 60, bottom: 20),
-            child: data.status == 'pending'
+            child: data.status == 'pending' && isOwner
                 ? _buildButtonConfirmation(provider)
                 : const SizedBox.shrink(),
           )
@@ -416,7 +451,14 @@ class _DetailLaporanScreenState extends State<DetailLaporanScreen> {
                           idLaporan: widget.idLaporan,
                           status: 'rejected',
                           kategori: widget.kategori,
-                        );
+                        ).then((value) {
+                          if (provider.uploadResponse!.success) {
+                            provider.getDetailLaporan(id: widget.idLaporan);
+                            ToastMessage.show(context, 'Laporan ditolak');
+                          }
+                        }).catchError((e) {
+                          ToastMessage.show(context, e.toString());
+                        });
                         context.pop();
                       },
                       msgCancel: 'Batal',
@@ -462,7 +504,14 @@ class _DetailLaporanScreenState extends State<DetailLaporanScreen> {
                           idLaporan: widget.idLaporan,
                           status: 'approved',
                           kategori: widget.kategori,
-                        );
+                        ).then((value) {
+                          if (provider.uploadResponse!.success) {
+                            provider.getDetailLaporan(id: widget.idLaporan);
+                            ToastMessage.show(context, 'Laporan diterima');
+                          }
+                        }).catchError((e) {
+                          ToastMessage.show(context, e.toString());
+                        });
                         context.pop();
                       },
                       msgCancel: 'Batal',

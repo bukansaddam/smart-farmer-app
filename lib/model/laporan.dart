@@ -34,6 +34,7 @@ class Laporan with _$Laporan {
     required String jenis,
     required String kandang,
     required DateTime tanggal,
+    required String status,
   }) = _Laporan;
 
   factory Laporan.fromJson(Map<String, dynamic> json) =>

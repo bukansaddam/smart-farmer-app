@@ -58,9 +58,7 @@ class _InventoryScreenState extends State<InventoryScreen> {
         );
       }
       await inventoryProvider.refreshInventory(
-          idKandang: isOwner
-              ? kandangProvider.selectedKandang!.id
-              : '',
+          idKandang: isOwner ? kandangProvider.selectedKandang!.id : '',
           category:
               widget.category == 'Pakan' ? selectedCategory : widget.category);
     });
@@ -143,7 +141,7 @@ class _InventoryScreenState extends State<InventoryScreen> {
                         padding: const EdgeInsets.symmetric(horizontal: 16),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(15),
-                          color: const Color(0xFFF3F5F9),
+                          color: const Color(0xFFE9ECF2),
                         ),
                         child: DropdownButton<String>(
                           value: selectedCategory.isNotEmpty
@@ -274,7 +272,8 @@ class _InventoryScreenState extends State<InventoryScreen> {
                     'id': commodities.id,
                   }, extra: {
                     'category': widget.category,
-                    'idKandang': isOwner ? kandangProvider.selectedKandang!.id : '',
+                    'idKandang':
+                        isOwner ? kandangProvider.selectedKandang!.id : '',
                   });
                 },
                 child: Column(

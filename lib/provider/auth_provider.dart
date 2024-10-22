@@ -87,6 +87,53 @@ class AuthProvider extends ChangeNotifier {
     }
   }
 
+  Future<bool> registerPetugas({
+    required String email,
+    required String password,
+    required String name,
+    required String phone,
+    required String kodePemilik,
+  }) async {
+    try {
+      loadingState = const LoadingState.loading();
+      notifyListeners();
+
+      registerResponse = await apiService.registerPetugas(
+        email: email,
+        password: password,
+        name: name,
+        phone: phone,
+        kodePemilik: kodePemilik,
+      );
+
+      if (registerResponse!.success) {
+        loadingState = const LoadingState.loaded();
+        _message = registerResponse!.message;
+
+        final User user = User(
+          email: email,
+          token: registerResponse!.token,
+        );
+
+        await authRepository.saveUser(user);
+        await authRepository.saveState(true);
+
+        notifyListeners();
+        return true;
+      } else {
+        _message = registerResponse!.message;
+        loadingState = LoadingState.error(registerResponse!.message);
+        notifyListeners();
+        return false;
+      }
+    } catch (e) {
+      loadingState = LoadingState.error(e.toString());
+      _message = e.toString();
+      notifyListeners();
+      return false;
+    }
+  }
+
   Future<bool> login({
     required String email,
     required String password,

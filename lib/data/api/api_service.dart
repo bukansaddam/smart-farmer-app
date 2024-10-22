@@ -7,6 +7,7 @@ import 'package:smart_farmer_app/model/detail_laporan.dart';
 import 'package:smart_farmer_app/model/detail_petugas.dart';
 import 'package:smart_farmer_app/model/inventory.dart';
 import 'package:smart_farmer_app/model/kandang.dart';
+import 'package:smart_farmer_app/model/kandang_petugas.dart';
 import 'package:smart_farmer_app/model/laporan.dart';
 import 'package:smart_farmer_app/model/login.dart';
 import 'package:smart_farmer_app/model/petugas.dart';
@@ -127,8 +128,7 @@ class ApiService {
             ? '$baseUrl$_inventory/petugas?page=$page&pageSize=$pageSize&jenis=$jenis&name=$name'
             : '$baseUrl$_inventory/investor/$idKandang?page=$page&pageSize=$pageSize&jenis=$jenis&name=$name';
     final response = await http.get(
-      Uri.parse(
-          url),
+      Uri.parse(url),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
         'Authorization': 'Bearer $token',
@@ -454,6 +454,24 @@ class ApiService {
     }
   }
 
+  Future<KandangPetugasResponse> getKandangByPetugas({
+    required String token,
+  }) async {
+    final response = await http.get(
+      Uri.parse('$baseUrl$_kandang/petugas'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Authorization': 'Bearer $token',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      return KandangPetugasResponse.fromJson(jsonDecode(response.body));
+    } else {
+      return KandangPetugasResponse.fromJson(jsonDecode(response.body));
+    }
+  }
+
   /*--------------Kandang--------------*/
 
   /*--------------Laporan--------------*/
@@ -465,9 +483,13 @@ class ApiService {
     int pageSize = 10,
     String kandang = '',
   }) async {
+    String url = isPemilik
+        ? '$baseUrl$_laporan/owner/all?page=$page&pageSize=$pageSize&jenis=$jenis&kandang=$kandang'
+        : isPetugas
+            ? '$baseUrl$_laporan/petugas/all?page=$page&pageSize=$pageSize&jenis=$jenis&kandang=$kandang'
+            : '$baseUrl$_laporan/investor/all?page=$page&pageSize=$pageSize&jenis=$jenis&kandang=$kandang';
     final response = await http.get(
-      Uri.parse(
-          '$baseUrl$_laporan/owner/all?page=$page&pageSize=$pageSize&jenis=$jenis&kandang=$kandang'),
+      Uri.parse(url),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
         'Authorization': 'Bearer $token',
@@ -521,6 +543,96 @@ class ApiService {
         'status': status,
       }),
     );
+
+    if (response.statusCode == 200) {
+      return UploadResponse.fromJson(jsonDecode(response.body));
+    } else {
+      return UploadResponse.fromJson(jsonDecode(response.body));
+    }
+  }
+
+  Future<UploadResponse> createLaporanKematian({
+    required String token,
+    required String idKandang,
+    required String ciriKematian,
+    required String jumlah,
+  }) async {
+    final response = await http.post(
+      Uri.parse('$baseUrl$_laporan/kematian-ayam'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Authorization': 'Bearer $token',
+      },
+      body: jsonEncode(<String, dynamic>{
+        'id_kandang': idKandang,
+        'keterangan': ciriKematian,
+        'jumlah': jumlah,
+      }),
+    );
+
+    if (response.statusCode == 200) {
+      return UploadResponse.fromJson(jsonDecode(response.body));
+    } else {
+      return UploadResponse.fromJson(jsonDecode(response.body));
+    }
+  }
+
+  Future<UploadResponse> createLaporanTelur({
+    required String token,
+    required String idKandang,
+    required String jumlah,
+  }) async {
+    final response = await http.post(
+      Uri.parse('$baseUrl$_laporan/panen-telur'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Authorization': 'Bearer $token',
+      },
+      body: jsonEncode(<String, dynamic>{
+        'id_kandang': idKandang,
+        'jumlah': jumlah,
+      }),
+    );
+
+    if (response.statusCode == 200) {
+      return UploadResponse.fromJson(jsonDecode(response.body));
+    } else {
+      return UploadResponse.fromJson(jsonDecode(response.body));
+    }
+  }
+
+  Future<UploadResponse> createLaporanPedaging({
+    required String token,
+    required String idKandang,
+    required String jumlah,
+    required List<List<int>> images,
+    required List<String> filenames,
+  }) async {
+    final request = http.MultipartRequest(
+      'POST',
+      Uri.parse('$baseUrl$_laporan/ayam-pedaging/sampling'),
+    );
+
+    for (int i = 0; i < images.length; i++) {
+      var multipartFile = http.MultipartFile.fromBytes(
+        'images',
+        images[i],
+        filename: filenames[i],
+      );
+      request.files.add(multipartFile);
+    }
+
+    request.fields.addAll({
+      'id_kandang': idKandang,
+      'jumlah': jumlah,
+    });
+
+    request.headers.addAll({
+      'Authorization': 'Bearer $token',
+    });
+
+    final streamedResponse = await request.send();
+    final response = await http.Response.fromStream(streamedResponse);
 
     if (response.statusCode == 200) {
       return UploadResponse.fromJson(jsonDecode(response.body));

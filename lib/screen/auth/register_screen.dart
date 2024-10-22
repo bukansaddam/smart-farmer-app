@@ -19,8 +19,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final _nameController = TextEditingController();
   final _phoneController = TextEditingController();
   final _emailController = TextEditingController();
+  final _kodeController = TextEditingController();
   final _passwordController = TextEditingController();
   final _confirmPasswordController = TextEditingController();
+
+  final actor = const String.fromEnvironment('actor', defaultValue: 'pemilik');
+
+  bool get isOwner => actor == 'pemilik';
+  bool get isEmployee => actor == 'petugas';
 
   final formKey = GlobalKey<FormState>();
 
@@ -29,6 +35,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
     _nameController.dispose();
     _phoneController.dispose();
     _emailController.dispose();
+    _kodeController.dispose();
     _passwordController.dispose();
     _confirmPasswordController.dispose();
     super.dispose();
@@ -103,6 +110,17 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                 controller: _emailController,
                                 labelText: 'Email',
                                 keyboardType: TextInputType.emailAddress),
+                            if (isEmployee)
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  const SizedBox(height: 12),
+                                  CustomTextField(
+                                    controller: _kodeController,
+                                    labelText: 'Kode Pemilik',
+                                  ),
+                                ],
+                              ),
                             const SizedBox(height: 12),
                             CustomTextField(
                               controller: _passwordController,
@@ -180,25 +198,48 @@ class _RegisterScreenState extends State<RegisterScreen> {
         return;
       }
 
-      await provider
-          .register(
-        email: email,
-        password: password,
-        name: name,
-        phone: phone,
-      )
-          .then((_) {
-        if (provider.registerResponse!.success && mounted) {
-          context.goNamed('login');
-          ToastMessage.show(context, provider.registerResponse!.message);
-        } else if (mounted) {
-          ToastMessage.show(context, provider.registerResponse!.message);
-        }
-      }).catchError((error) {
-        if (mounted) {
-          ToastMessage.show(context, error.toString());
-        }
-      });
+      if (isEmployee) {
+        await provider
+            .registerPetugas(
+          email: email,
+          password: password,
+          name: name,
+          phone: phone,
+          kodePemilik: _kodeController.text,
+        )
+            .then((_) {
+          if (provider.registerResponse!.success && mounted) {
+            context.goNamed('login');
+            ToastMessage.show(context, provider.registerResponse!.message);
+          } else if (mounted) {
+            ToastMessage.show(context, provider.registerResponse!.message);
+          }
+        }).catchError((error) {
+          if (mounted) {
+            ToastMessage.show(context, error.toString());
+          }
+        });
+      } else {
+        await provider
+            .register(
+          email: email,
+          password: password,
+          name: name,
+          phone: phone,
+        )
+            .then((_) {
+          if (provider.registerResponse!.success && mounted) {
+            context.goNamed('login');
+            ToastMessage.show(context, provider.registerResponse!.message);
+          } else if (mounted) {
+            ToastMessage.show(context, provider.registerResponse!.message);
+          }
+        }).catchError((error) {
+          if (mounted) {
+            ToastMessage.show(context, error.toString());
+          }
+        });
+      }
     }
   }
 }
