@@ -13,6 +13,7 @@ import 'package:smart_farmer_app/model/login.dart';
 import 'package:smart_farmer_app/model/petugas.dart';
 import 'package:smart_farmer_app/model/register.dart';
 import 'package:http/http.dart' as http;
+import 'package:smart_farmer_app/model/statistic.dart';
 import 'package:smart_farmer_app/model/upload.dart';
 
 class ApiService {
@@ -712,4 +713,33 @@ class ApiService {
   }
 
   /*--------------Petugas--------------*/
+
+  /*--------------Statistik--------------*/
+
+  Future<StatisticResponse> getStatistik({
+    required String token,
+    required String idKandang,
+    required String jenis,
+    required String startDate,
+    required String endDate,
+  }) async {
+    final response = await http.get(
+      Uri.parse(
+          '$baseUrl$_laporan/statistic/$idKandang?kategori=$jenis&dateStart=$startDate&dateEnd=$endDate'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Authorization': 'Bearer $token',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      debugPrint(response.body);
+      return StatisticResponse.fromJson(jsonDecode(response.body));
+    } else {
+      debugPrint(response.body);
+      return StatisticResponse.fromJson(jsonDecode(response.body));
+    }
+  }
+
+  /*--------------Statistik--------------*/
 }

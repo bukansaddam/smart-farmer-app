@@ -6,7 +6,6 @@ import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
-import 'package:smart_farmer_app/model/laporan.dart';
 import 'package:smart_farmer_app/provider/laporan_provider.dart';
 import 'package:smart_farmer_app/screen/widgets/alert_dialog.dart';
 import 'package:smart_farmer_app/screen/widgets/button.dart';

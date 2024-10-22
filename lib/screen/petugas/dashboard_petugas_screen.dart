@@ -4,8 +4,6 @@ import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:smart_farmer_app/model/kandang_petugas.dart';
 import 'package:smart_farmer_app/provider/kandang_provider.dart';
-import 'package:smart_farmer_app/screen/pemilik/dashboard_pemilik_screen.dart';
-import 'package:smart_farmer_app/screen/widgets/item_drawer.dart';
 
 class DashboardPetugasScreen extends StatefulWidget {
   const DashboardPetugasScreen({super.key});

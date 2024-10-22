@@ -447,11 +447,13 @@ class _DetailLaporanScreenState extends State<DetailLaporanScreen> {
                           'Apakah anda yakin ingin menolak laporan ini?',
                       msgAccept: 'Tolak',
                       onAccept: () {
-                        provider.updateStatusLaporan(
+                        provider
+                            .updateStatusLaporan(
                           idLaporan: widget.idLaporan,
                           status: 'rejected',
                           kategori: widget.kategori,
-                        ).then((value) {
+                        )
+                            .then((value) {
                           if (provider.uploadResponse!.success) {
                             provider.getDetailLaporan(id: widget.idLaporan);
                             ToastMessage.show(context, 'Laporan ditolak');
@@ -500,11 +502,13 @@ class _DetailLaporanScreenState extends State<DetailLaporanScreen> {
                           'Apakah anda yakin ingin menerima laporan ini?',
                       msgAccept: 'Terima',
                       onAccept: () {
-                        provider.updateStatusLaporan(
+                        provider
+                            .updateStatusLaporan(
                           idLaporan: widget.idLaporan,
                           status: 'approved',
                           kategori: widget.kategori,
-                        ).then((value) {
+                        )
+                            .then((value) {
                           if (provider.uploadResponse!.success) {
                             provider.getDetailLaporan(id: widget.idLaporan);
                             ToastMessage.show(context, 'Laporan diterima');

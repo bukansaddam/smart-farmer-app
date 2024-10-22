@@ -7,6 +7,7 @@ import 'package:smart_farmer_app/provider/inventory_provider.dart';
 import 'package:smart_farmer_app/provider/kandang_provider.dart';
 import 'package:smart_farmer_app/provider/laporan_provider.dart';
 import 'package:smart_farmer_app/provider/petugas_provider.dart';
+import 'package:smart_farmer_app/provider/statistic_provider.dart';
 
 final locator = GetIt.instance;
 
@@ -28,6 +29,9 @@ void init() {
   );
   locator.registerLazySingleton<PetugasProvider>(
     () => PetugasProvider(apiService: locator(), authRepository: locator()),
+  );
+  locator.registerLazySingleton<StatisticProvider>(
+    () => StatisticProvider(apiService: locator(), authRepository: locator()),
   );
 
   locator.registerLazySingleton<ApiService>(() => ApiService());

@@ -168,7 +168,7 @@ class KandangProvider extends ChangeNotifier {
   }
 
   Future<void> getKandangByPetugas() async {
-    try{
+    try {
       loadingState = const LoadingState.loading();
       notifyListeners();
 

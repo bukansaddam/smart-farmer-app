@@ -9,6 +9,7 @@ import 'package:smart_farmer_app/provider/inventory_provider.dart';
 import 'package:smart_farmer_app/provider/kandang_provider.dart';
 import 'package:smart_farmer_app/provider/laporan_provider.dart';
 import 'package:smart_farmer_app/provider/petugas_provider.dart';
+import 'package:smart_farmer_app/provider/statistic_provider.dart';
 import 'package:smart_farmer_app/screen/auth/register_screen.dart';
 import 'package:smart_farmer_app/screen/pemilik/inventory/add_inventory_screen.dart';
 import 'package:smart_farmer_app/screen/pemilik/inventory/detail_inventory_screen.dart';
@@ -54,6 +55,9 @@ class PemilikApp extends StatelessWidget {
         ),
         ChangeNotifierProvider(
           create: (context) => di.locator<PetugasProvider>(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => di.locator<StatisticProvider>(),
         ),
       ],
       child: MaterialApp.router(

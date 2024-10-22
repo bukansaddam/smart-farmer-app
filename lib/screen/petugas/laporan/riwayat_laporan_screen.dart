@@ -10,6 +10,6 @@ class RiwayatLaporanScreen extends StatefulWidget {
 class _RiwayatLaporanScreenState extends State<RiwayatLaporanScreen> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold();
+    return const Scaffold();
   }
 }

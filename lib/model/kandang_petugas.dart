@@ -1,5 +1,4 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'dart:convert';
 
 part 'kandang_petugas.freezed.dart';
 part 'kandang_petugas.g.dart';
@@ -25,7 +24,8 @@ class KandangPetugasResult with _$KandangPetugasResult {
     required KandangPetugas kandang,
   }) = _KandangPetugasResult;
 
-  factory KandangPetugasResult.fromJson(Map<String, dynamic> json) => _$KandangPetugasResultFromJson(json);
+  factory KandangPetugasResult.fromJson(Map<String, dynamic> json) =>
+      _$KandangPetugasResultFromJson(json);
 }
 
 @freezed
