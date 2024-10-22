@@ -46,7 +46,8 @@ class _InventoryScreenState extends State<InventoryScreen> {
       await kandangProvider.refreshKandang().then(
         (value) {
           if (kandangProvider.kandangResponse != null) {
-            kandangProvider.setSelectedKandang(kandang: kandangProvider.kandangResponse!.result.data.first);
+            kandangProvider.setSelectedKandang(
+                kandang: kandangProvider.kandangResponse!.result.data.first);
           } else {
             kandangProvider.setSelectedKandang(kandang: null);
           }
@@ -154,7 +155,8 @@ class _InventoryScreenState extends State<InventoryScreen> {
                               selectedCategory = value!;
                             });
                             context.read<InventoryProvider>().refreshInventory(
-                                  idKandang: kandangProvider.selectedKandang!.id,
+                                  idKandang:
+                                      kandangProvider.selectedKandang!.id,
                                   category: selectedCategory,
                                 );
                           },
@@ -171,7 +173,9 @@ class _InventoryScreenState extends State<InventoryScreen> {
                         color: Colors.green,
                         size: 20,
                       ),
-                      Text(kandangProvider.selectedKandang?.nama ?? 'Pilih Kandang',
+                      Text(
+                          kandangProvider.selectedKandang?.nama ??
+                              'Pilih Kandang',
                           style: const TextStyle(color: Colors.green)),
                     ],
                   ),
@@ -370,7 +374,8 @@ class _InventoryScreenState extends State<InventoryScreen> {
                       itemCount: kandangProvider.listKandang.length,
                       itemBuilder: (context, index) {
                         final kandang = kandangProvider.listKandang[index];
-                        bool isSame = kandangProvider.selectedKandang == kandang;
+                        bool isSame =
+                            kandangProvider.selectedKandang == kandang;
                         return _buildItemKandang(
                             kandang, kandangProvider, isSame);
                       },

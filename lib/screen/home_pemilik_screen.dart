@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:smart_farmer_app/model/kandang.dart';
 import 'package:smart_farmer_app/provider/home_provider.dart';
 import 'package:smart_farmer_app/provider/inventory_provider.dart';
 import 'package:smart_farmer_app/provider/kandang_provider.dart';
@@ -142,7 +141,7 @@ class _HomePemilikScreenState extends State<HomePemilikScreen> {
               shape: const Border(),
               children: [
                 ItemDrawer(
-                  icon: Icons.add,
+                  iconSvg: 'assets/icons/pakan.svg',
                   title: 'Pakan',
                   selected: _selectedIndex == 4,
                   onTap: () {
@@ -153,7 +152,7 @@ class _HomePemilikScreenState extends State<HomePemilikScreen> {
                   },
                 ),
                 ItemDrawer(
-                  icon: Icons.list,
+                  iconSvg: 'assets/icons/vitamin.svg',
                   title: 'Vitamin',
                   selected: _selectedIndex == 5,
                   onTap: () {
@@ -164,7 +163,7 @@ class _HomePemilikScreenState extends State<HomePemilikScreen> {
                   },
                 ),
                 ItemDrawer(
-                  icon: Icons.list,
+                  iconSvg: 'assets/icons/disinfektan.svg',
                   title: 'Disinfektan',
                   selected: _selectedIndex == 6,
                   onTap: () {

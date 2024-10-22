@@ -75,7 +75,15 @@ class _DashboardPemilikScreenState extends State<DashboardPemilikScreen> {
           ),
           const SizedBox(height: 8),
           CardDashboard(
-            onTap: () {},
+            onTap: () {
+              if (_selectedKandang != null) {
+                context.goNamed('statistik', extra: {
+                  'idKandang': _selectedKandang?.id,
+                  'kategori': 'kematian ayam',
+                  'title': 'Kematian Ayam',
+                });
+              }
+            },
             title: 'Kematian Ayam',
             totalData: '118',
             icon: 'chicken-dead.svg',
@@ -86,7 +94,15 @@ class _DashboardPemilikScreenState extends State<DashboardPemilikScreen> {
           ),
           const SizedBox(height: 16),
           CardDashboard(
-            onTap: () {},
+            onTap: () {
+              if (_selectedKandang != null) {
+                context.goNamed('statistik', extra: {
+                  'idKandang': _selectedKandang?.id,
+                  'kategori': 'panen telur',
+                  'title': 'Hasil Panen Telur',
+                });
+              }
+            },
             title: 'Hasil Panen Telur',
             totalData: '118',
             icon: 'egg.svg',
@@ -95,7 +111,15 @@ class _DashboardPemilikScreenState extends State<DashboardPemilikScreen> {
           ),
           const SizedBox(height: 16),
           CardDashboard(
-            onTap: () {},
+            onTap: () {
+              if (_selectedKandang != null) {
+                context.goNamed('statistik', extra: {
+                  'idKandang': _selectedKandang?.id,
+                  'kategori': 'ayam pedaging',
+                  'title': 'Hasil Panen Ayam Pedaging',
+                });
+              }
+            },
             title: 'Hasil Panen Ayam Pedaging',
             totalData: '118',
             icon: 'chicken-meat.svg',

@@ -20,6 +20,7 @@ import 'package:smart_farmer_app/screen/pemilik/kandang/detail_kandang_screen.da
 import 'package:smart_farmer_app/screen/pemilik/kandang/edit_kandang_screen.dart';
 import 'package:smart_farmer_app/screen/pemilik/laporan/detail_laporan_screen.dart';
 import 'package:smart_farmer_app/screen/pemilik/petugas/detail_petugas_screen.dart';
+import 'package:smart_farmer_app/screen/pemilik/statistik/statistik_screen.dart';
 import 'package:smart_farmer_app/screen/splash_screen.dart';
 import '../config/injection.dart' as di;
 
@@ -202,7 +203,24 @@ class PemilikApp extends StatelessWidget {
                   (state.extra as Map<String, dynamic>)['idPetugas'] as String;
               return DetailPetugasScreen(idPetugas: extraId);
             },
-          )
+          ),
+          GoRoute(
+            path: 'statistik',
+            name: 'statistik',
+            builder: (context, state) {
+              String extraId =
+                  (state.extra as Map<String, dynamic>)['idKandang'] as String;
+              String kategori =
+                  (state.extra as Map<String, dynamic>)['kategori'] as String;
+              String extraTitle =
+                  (state.extra as Map<String, dynamic>)['title'] as String;
+              return StatistikScreen(
+                kategori: kategori,
+                idKandang: extraId,
+                title: extraTitle,
+              );
+            },
+          ),
         ],
       ),
     ],
