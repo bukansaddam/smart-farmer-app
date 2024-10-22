@@ -22,11 +22,11 @@ class ApiService {
   static const String _kandang = '/kandang';
   static const String _laporan = '/laporan';
 
-  final actor = const String.fromEnvironment('actor', defaultValue: 'customer');
+  final actor = const String.fromEnvironment('actor', defaultValue: 'pemilik');
 
-  bool get isOwner => actor == 'owner';
-  bool get isEmployee => actor == 'employee';
-  bool get isCustomer => actor == 'customer';
+  bool get isPemilik => actor == 'pemilik';
+  bool get isPetugas => actor == 'petugas';
+  bool get isInvestor => actor == 'investor';
 
   /*--------------Auth--------------*/
 
@@ -121,9 +121,14 @@ class ApiService {
     jenis = '',
     name = '',
   }) async {
+    String url = isPemilik
+        ? '$baseUrl$_inventory/kandang/$idKandang?page=$page&pageSize=$pageSize&jenis=$jenis&name=$name'
+        : isPetugas
+            ? '$baseUrl$_inventory/petugas?page=$page&pageSize=$pageSize&jenis=$jenis&name=$name'
+            : '$baseUrl$_inventory/investor/$idKandang?page=$page&pageSize=$pageSize&jenis=$jenis&name=$name';
     final response = await http.get(
       Uri.parse(
-          '$baseUrl$_inventory/kandang/$idKandang?page=$page&pageSize=$pageSize&jenis=$jenis&name=$name'),
+          url),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
         'Authorization': 'Bearer $token',
