@@ -15,7 +15,7 @@ import 'package:http/http.dart' as http;
 import 'package:smart_farmer_app/model/upload.dart';
 
 class ApiService {
-  static const String baseUrl = 'http://192.168.1.19:3000';
+  static const String baseUrl = 'http://192.168.1.4:3000';
   static const String _auth = '/auth';
   static const String _user = '/user';
   static const String _inventory = '/inventory';
@@ -408,10 +408,12 @@ class ApiService {
     if (lokasi != null) request.fields['lokasi'] = lokasi;
     if (latitude != null) request.fields['latitude'] = latitude.toString();
     if (longitude != null) request.fields['longitude'] = longitude.toString();
-    if (jumlahAyam != null)
+    if (jumlahAyam != null) {
       request.fields['jumlah_ayam'] = jumlahAyam.toString();
-    if (deletedImages != null)
+    }
+    if (deletedImages != null) {
       request.fields['deletedImagesId'] = deletedImages.join(',');
+    }
 
     request.headers.addAll({
       'Content-Type': 'multipart/form-data',

@@ -1,5 +1,4 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'dart:convert';
 
 part 'detail_petugas.freezed.dart';
 part 'detail_petugas.g.dart';
@@ -27,5 +26,6 @@ class DetailPetugas with _$DetailPetugas {
     required String lokasiKandang,
   }) = _DetailPetugas;
 
-  factory DetailPetugas.fromJson(Map<String, dynamic> json) => _$DetailPetugasFromJson(json);
+  factory DetailPetugas.fromJson(Map<String, dynamic> json) =>
+      _$DetailPetugasFromJson(json);
 }

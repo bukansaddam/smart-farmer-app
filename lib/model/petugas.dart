@@ -23,7 +23,8 @@ class PetugasResult with _$PetugasResult {
     required List<Petugas> data,
   }) = _PetugasResult;
 
-  factory PetugasResult.fromJson(Map<String, dynamic> json) => _$PetugasResultFromJson(json);
+  factory PetugasResult.fromJson(Map<String, dynamic> json) =>
+      _$PetugasResultFromJson(json);
 }
 
 @freezed
@@ -37,5 +38,6 @@ class Petugas with _$Petugas {
     required String lokasiKandang,
   }) = _Petugas;
 
-  factory Petugas.fromJson(Map<String, dynamic> json) => _$PetugasFromJson(json);
+  factory Petugas.fromJson(Map<String, dynamic> json) =>
+      _$PetugasFromJson(json);
 }

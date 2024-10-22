@@ -61,9 +61,7 @@ class PetugasProvider extends ChangeNotifier {
     }
   }
 
-  Future<void> refreshPetugas({
-    String? searchValue
-  }) async {
+  Future<void> refreshPetugas({String? searchValue}) async {
     pageItems = 1;
     listPetugas.clear();
     await getAllPetugas(nama: searchValue);

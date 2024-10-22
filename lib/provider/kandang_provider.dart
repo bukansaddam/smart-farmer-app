@@ -73,8 +73,10 @@ class KandangProvider extends ChangeNotifier {
 
         if (kandangResponse!.result.data.length < sizeItems) {
           pageItems = null;
+          notifyListeners();
         } else {
           pageItems = pageItems! + 1;
+          notifyListeners();
         }
       } else {
         loadingState = LoadingState.error(kandangResponse!.message);

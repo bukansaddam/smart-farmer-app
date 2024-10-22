@@ -57,12 +57,12 @@ class PemilikApp extends StatelessWidget {
       ],
       child: MaterialApp.router(
         theme: ThemeData(
-          scaffoldBackgroundColor: Colors.white,
+          scaffoldBackgroundColor: const Color(0xFFF6F7FC),
           bottomSheetTheme: const BottomSheetThemeData(
             backgroundColor: Colors.white,
           ),
           appBarTheme: const AppBarTheme(
-            backgroundColor: Colors.white,
+            backgroundColor: Color(0xFFF6F7FC),
             elevation: 0,
             titleTextStyle: TextStyle(
               fontWeight: FontWeight.bold,
