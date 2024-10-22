@@ -4,12 +4,15 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:location/location.dart';
 import 'package:provider/provider.dart';
 import 'package:smart_farmer_app/provider/kandang_provider.dart';
 import 'package:smart_farmer_app/screen/widgets/button.dart';
 import 'package:smart_farmer_app/screen/widgets/text_field.dart';
 import 'package:smart_farmer_app/screen/widgets/toast_message.dart';
+import 'package:geocoding/geocoding.dart' as geo;
 
 class AddKandangScreen extends StatefulWidget {
   const AddKandangScreen({super.key});
@@ -26,10 +29,70 @@ class _AddKandangScreenState extends State<AddKandangScreen> {
   final _formKey = GlobalKey<FormState>();
   late KandangProvider _kandangProvider;
 
+  LatLng? locationData;
+  LatLng currentLocation = const LatLng(0, 0);
+
+  geo.Placemark? placemark;
+
   @override
   void didChangeDependencies() {
     _kandangProvider = Provider.of<KandangProvider>(context, listen: false);
     super.didChangeDependencies();
+
+    getMyLocation();
+
+    if (locationData != null && placemark != null) {
+      _lokasiController.text = '${placemark!.locality}';
+    }
+  }
+
+  void getMyLocation() async {
+    late bool serviceEnabled;
+    late PermissionStatus permissionGranted;
+    final Location location = Location();
+
+    serviceEnabled = await location.serviceEnabled();
+    if (!serviceEnabled) {
+      serviceEnabled = await location.requestService();
+      if (!serviceEnabled) {
+        debugPrint("Location services are not available");
+        return;
+      }
+    }
+    permissionGranted = await location.hasPermission();
+    if (permissionGranted == PermissionStatus.denied) {
+      permissionGranted = await location.requestPermission();
+      if (permissionGranted != PermissionStatus.granted) {
+        debugPrint("Location permission not granted");
+        return;
+      }
+    }
+
+    final locationDataResult = await location.getLocation();
+    final latLng =
+        LatLng(locationDataResult.latitude!, locationDataResult.longitude!);
+
+    if (mounted) {
+      setState(() {
+        currentLocation = latLng;
+        locationData = latLng;
+      });
+    }
+
+    try {
+      final placemarks = await geo.placemarkFromCoordinates(
+        locationDataResult.latitude!,
+        locationDataResult.longitude!,
+      );
+      if (placemarks.isNotEmpty) {
+        setState(() {
+          placemark = placemarks.first;
+          _lokasiController.text = '${placemark!.locality}';
+        });
+      }
+    } catch (e) {
+      debugPrint('Error fetching placemark: $e');
+    }
   }
 
   @override
@@ -87,10 +150,60 @@ class _AddKandangScreenState extends State<AddKandangScreen> {
                   ),
                 ),
                 const SizedBox(height: 4),
-                CustomTextField(
-                  controller: _lokasiController,
-                  hintText: 'Input location here',
-                  labelText: 'Lokasi',
+                Row(
+                  children: [
+                    Expanded(
+                      child: CustomTextField(
+                        controller: _lokasiController,
+                        hintText: 'Input location here',
+                        labelText: 'Lokasi',
+                      ),
+                    ),
+                    Container(
+                      width: 55,
+                      height: 55,
+                      margin: const EdgeInsets.only(left: 12),
+                      decoration: BoxDecoration(
+                        color: Colors.grey[200],
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: IconButton(
+                        onPressed: () async {
+                          final result = await context.pushNamed('maps',
+                              extra: LatLng(currentLocation.latitude,
+                                  currentLocation.longitude));
+
+                          if (result is LatLng) {
+                            setState(() {
+                              locationData = result;
+                            });
+
+                            try {
+                              final placemarks =
+                                  await geo.placemarkFromCoordinates(
+                                locationData!.latitude,
+                                locationData!.longitude,
+                              );
+
+                              if (placemarks.isNotEmpty) {
+                                setState(() {
+                                  placemark = placemarks.first;
+                                  _lokasiController.text =
+                                      '${placemark!.locality}';
+                                });
+                              }
+                            } catch (e) {
+                              debugPrint('Error fetching placemark: $e');
+                            }
+                          }
+                        },
+                        icon: const Icon(
+                          Icons.map_outlined,
+                          color: Colors.grey,
+                        ),
+                      ),
+                    )
+                  ],
                 ),
                 const SizedBox(height: 12),
                 const Text(

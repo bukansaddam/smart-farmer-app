@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:smart_farmer_app/model/detail_inventory.dart';
 import 'package:smart_farmer_app/model/detail_kandang.dart';
@@ -19,6 +20,7 @@ import 'package:smart_farmer_app/screen/pemilik/inventory/edit_inventory_screen.
 import 'package:smart_farmer_app/screen/pemilik/kandang/add_kandang_screen.dart';
 import 'package:smart_farmer_app/screen/pemilik/kandang/detail_kandang_screen.dart';
 import 'package:smart_farmer_app/screen/pemilik/kandang/edit_kandang_screen.dart';
+import 'package:smart_farmer_app/screen/pemilik/kandang/maps_screen.dart';
 import 'package:smart_farmer_app/screen/pemilik/laporan/detail_laporan_screen.dart';
 import 'package:smart_farmer_app/screen/pemilik/petugas/detail_petugas_screen.dart';
 import 'package:smart_farmer_app/screen/pemilik/statistik/statistik_screen.dart';
@@ -180,11 +182,34 @@ class PemilikApp extends StatelessWidget {
                 ),
               ]),
           GoRoute(
-              path: 'add_kandang',
-              name: 'add_kandang',
-              builder: (context, state) {
-                return const AddKandangScreen();
-              }),
+            path: 'add_kandang',
+            name: 'add_kandang',
+            builder: (context, state) {
+              return const AddKandangScreen();
+            },
+            routes: [
+              GoRoute(
+                path: 'maps',
+                name: 'maps',
+                builder: (context, state) {
+                  LatLng? location;
+
+                  if (state.extra is Set<LatLng> &&
+                      (state.extra as Set<LatLng>).isNotEmpty) {
+                    location = (state.extra as Set<LatLng>).first;
+                  } else {
+                    location = state.extra as LatLng?;
+                  }
+
+                  if (location != null) {
+                    return MapsScreen(initialLocation: location);
+                  } else {
+                    return const MapsScreen(initialLocation: LatLng(0.0, 0.0));
+                  }
+                },
+              )
+            ],
+          ),
           GoRoute(
             path: 'detail_laporan',
             name: 'detail_laporan',

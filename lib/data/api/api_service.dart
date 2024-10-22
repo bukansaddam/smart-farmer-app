@@ -568,6 +568,7 @@ class ApiService {
         'id_kandang': idKandang,
         'keterangan': ciriKematian,
         'jumlah': jumlah,
+        'tanggal': DateTime.now().toString(),
       }),
     );
 
@@ -592,6 +593,7 @@ class ApiService {
       body: jsonEncode(<String, dynamic>{
         'id_kandang': idKandang,
         'jumlah': jumlah,
+        'tanggal': DateTime.now().toString(),
       }),
     );
 
@@ -626,6 +628,7 @@ class ApiService {
     request.fields.addAll({
       'id_kandang': idKandang,
       'jumlah': jumlah,
+      'tanggal': DateTime.now().toString(),
     });
 
     request.headers.addAll({
