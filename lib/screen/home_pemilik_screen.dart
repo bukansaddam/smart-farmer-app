@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:smart_farmer_app/model/kandang.dart';
 import 'package:smart_farmer_app/provider/home_provider.dart';
 import 'package:smart_farmer_app/provider/inventory_provider.dart';
+import 'package:smart_farmer_app/provider/kandang_provider.dart';
 import 'package:smart_farmer_app/screen/pemilik/dashboard_pemilik_screen.dart';
 import 'package:smart_farmer_app/screen/pemilik/inventory/inventory_screen.dart';
 import 'package:smart_farmer_app/screen/pemilik/kandang/kandang_screen.dart';
@@ -20,10 +22,32 @@ class _HomePemilikScreenState extends State<HomePemilikScreen> {
   late int _selectedIndex;
   String _title = 'Dashboard';
 
+  late KandangProvider kandangProvider;
+
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     _selectedIndex = context.watch<HomeProvider>().selectedIndex;
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    kandangProvider = context.read<KandangProvider>();
+
+    Future.microtask(() {
+      kandangProvider.refreshKandang().then(
+        (value) {
+          if (kandangProvider.kandangResponse != null) {
+            kandangProvider.setSelectedKandang(
+                kandang: kandangProvider.kandangResponse!.result.data.first);
+          } else {
+            kandangProvider.setSelectedKandang(kandang: null);
+          }
+        },
+      );
+    });
   }
 
   void _onItemTapped(int index) {
@@ -35,7 +59,7 @@ class _HomePemilikScreenState extends State<HomePemilikScreen> {
               ? 'Vitamin'
               : 'Disinfektan';
       context.read<InventoryProvider>().refreshInventory(
-            idKandang: 'e15e286c-aa40-474d-9baa-5f79912205e3',
+            idKandang: kandangProvider.selectedKandang!.id,
             category: category,
           );
     }

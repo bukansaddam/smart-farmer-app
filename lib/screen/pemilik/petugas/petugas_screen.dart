@@ -121,11 +121,16 @@ class _PetugasScreenState extends State<PetugasScreen> {
                     title: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text(petugas.nama),
+                        Text(
+                          petugas.nama,
+                          style: const TextStyle(
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
                         Row(
                           children: [
                             const Icon(
-                              Icons.ac_unit_outlined,
+                              Icons.location_on_outlined,
                               size: 20,
                             ),
                             Text(petugas.lokasiKandang),

@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:smart_farmer_app/provider/kandang_provider.dart';
@@ -141,13 +142,21 @@ class _KandangScreenState extends State<KandangScreen> {
                     title: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text(kandang.nama),
+                        Text(
+                          kandang.nama,
+                          style: const TextStyle(
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
                         Row(
                           children: [
-                            const Icon(
-                              Icons.ac_unit_outlined,
-                              size: 20,
+                            SvgPicture.asset(
+                              'assets/icons/chicken-alive.svg',
+                              width: 20,
+                              colorFilter: const ColorFilter.mode(
+                                  Colors.black, BlendMode.srcIn),
                             ),
+                            const SizedBox(width: 4),
                             Text(kandang.jumlahAyam.toString()),
                           ],
                         )

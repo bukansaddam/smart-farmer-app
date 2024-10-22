@@ -1,5 +1,6 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:smart_farmer_app/common/loading_state.dart';
@@ -267,9 +268,11 @@ class _DetailKandangScreenState extends State<DetailKandangScreen> {
           const SizedBox(height: 4),
           Row(
             children: [
-              const Icon(
-                Icons.child_care,
-                color: Colors.black87,
+              SvgPicture.asset(
+                'assets/icons/chicken-alive.svg',
+                width: 20,
+                colorFilter:
+                    const ColorFilter.mode(Colors.black, BlendMode.srcIn),
               ),
               const SizedBox(width: 4),
               Text.rich(
