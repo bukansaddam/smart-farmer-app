@@ -571,5 +571,28 @@ class ApiService {
     }
   }
 
+  Future<UploadResponse> updateLokasiPetugas({
+    required String token,
+    required String idPetugas,
+    required String idKandang,
+  }) async {
+    final response = await http.put(
+      Uri.parse('$baseUrl$_user/petugas/$idPetugas'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Authorization': 'Bearer $token',
+      },
+      body: jsonEncode(<String, dynamic>{
+        'id_kandang': idKandang,
+      }),
+    );
+
+    if (response.statusCode == 200) {
+      return UploadResponse.fromJson(jsonDecode(response.body));
+    } else {
+      return UploadResponse.fromJson(jsonDecode(response.body));
+    }
+  }
+
   /*--------------Petugas--------------*/
 }

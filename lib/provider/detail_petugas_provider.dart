@@ -47,4 +47,34 @@ class DetailPetugasProvider extends ChangeNotifier {
       notifyListeners();
     }
   }
+
+  Future<void> updateLokasiPetugas({
+    required String idPetugas,
+    required String idKandang,
+  }) async {
+    try {
+      loadingState = const LoadingState.loading();
+      notifyListeners();
+
+      final repository = await authRepository.getUser();
+      final token = repository!.token;
+
+      uploadResponse = await apiService.updateLokasiPetugas(
+        token: token,
+        idPetugas: idPetugas,
+        idKandang: idKandang,
+      );
+
+      if (uploadResponse!.success) {
+        loadingState = const LoadingState.loaded();
+        notifyListeners();
+      } else {
+        loadingState = LoadingState.error(uploadResponse!.message);
+        notifyListeners();
+      }
+    } catch (error) {
+      loadingState = LoadingState.error(error.toString());
+      notifyListeners();
+    }
+  }
 }
