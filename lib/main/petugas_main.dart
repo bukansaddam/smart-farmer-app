@@ -50,6 +50,7 @@ class PetugasApp extends StatelessWidget {
         ),
       ],
       child: MaterialApp.router(
+        debugShowCheckedModeBanner: false,
         theme: ThemeData(
           scaffoldBackgroundColor: const Color(0xFFF6F7FC),
           bottomSheetTheme: const BottomSheetThemeData(

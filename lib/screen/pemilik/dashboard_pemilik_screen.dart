@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:smart_farmer_app/model/kandang.dart';
+import 'package:smart_farmer_app/provider/auth_provider.dart';
 import 'package:smart_farmer_app/provider/kandang_provider.dart';
 import 'package:smart_farmer_app/screen/widgets/card_dashboard.dart';
 
@@ -16,12 +17,14 @@ class _DashboardPemilikScreenState extends State<DashboardPemilikScreen> {
   Kandang? _selectedKandang;
 
   late KandangProvider kandangProvider;
+  late AuthProvider authProvider;
 
   @override
   void initState() {
     super.initState();
 
     kandangProvider = context.read<KandangProvider>();
+    authProvider = context.read<AuthProvider>();
 
     Future.microtask(() {
       kandangProvider.refreshKandang().then(
@@ -36,26 +39,52 @@ class _DashboardPemilikScreenState extends State<DashboardPemilikScreen> {
           }
         },
       );
+      authProvider.getKodeOwner();
     });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Consumer<KandangProvider>(
-        builder: (context, kandangProvider, child) {
-          return _buildBody(kandangProvider);
+      body: Consumer2<KandangProvider, AuthProvider>(
+        builder: (context, kandangProvider, authProvider, child) {
+          return _buildBody(kandangProvider, authProvider);
         },
       ),
     );
   }
 
-  Widget _buildBody(KandangProvider kandangProvider) {
+  Widget _buildBody(
+      KandangProvider kandangProvider, AuthProvider authProvider) {
     return Padding(
       padding: const EdgeInsets.all(16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          const Text(
+            'Kode Anda',
+            style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          const SizedBox(height: 8),
+          authProvider.loadingStateKode.maybeWhen(
+            orElse: () {
+              return const Text('-');
+            },
+            loaded: () {
+              final data = authProvider.uploadResponse!.data;
+              return Text(
+                data!,
+                style: const TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                ),
+              );
+            },
+          ),
+          const SizedBox(height: 16),
           const Text(
             'Lokasi',
             style: TextStyle(
@@ -85,7 +114,7 @@ class _DashboardPemilikScreenState extends State<DashboardPemilikScreen> {
               }
             },
             title: 'Kematian Ayam',
-            totalData: '118',
+            totalData: '143',
             icon: 'chicken-dead.svg',
             iconColor: const Color(0xFFDEB7B7),
             textColor: const Color(0xFFC07171),
@@ -104,7 +133,7 @@ class _DashboardPemilikScreenState extends State<DashboardPemilikScreen> {
               }
             },
             title: 'Hasil Panen Telur',
-            totalData: '118',
+            totalData: '1063',
             icon: 'egg.svg',
             iconColor: const Color(0xFFEFE385),
             textColor: const Color(0xFFDFC60B),
@@ -121,7 +150,7 @@ class _DashboardPemilikScreenState extends State<DashboardPemilikScreen> {
               }
             },
             title: 'Hasil Panen Ayam Pedaging',
-            totalData: '118',
+            totalData: '235',
             icon: 'chicken-meat.svg',
             iconColor: const Color(0xFFE6B883),
             textColor: const Color(0xFFCD7107),

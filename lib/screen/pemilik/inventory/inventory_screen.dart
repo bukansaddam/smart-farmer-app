@@ -239,7 +239,8 @@ class _InventoryScreenState extends State<InventoryScreen> {
         return RefreshIndicator(
           onRefresh: () async {
             await context.read<InventoryProvider>().refreshInventory(
-                  idKandang: !isEmployee ? kandangProvider.selectedKandang!.id : '',
+                  idKandang:
+                      !isEmployee ? kandangProvider.selectedKandang!.id : '',
                   category: widget.category == 'Pakan'
                       ? selectedCategory
                       : widget.category,

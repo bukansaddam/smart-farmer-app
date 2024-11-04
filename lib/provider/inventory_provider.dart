@@ -7,6 +7,7 @@ import 'package:smart_farmer_app/data/api/api_service.dart';
 import 'package:smart_farmer_app/data/local/auth_repository.dart';
 import 'package:image/image.dart' as img;
 import 'package:smart_farmer_app/model/detail_inventory.dart';
+import 'package:smart_farmer_app/model/history_inventory.dart';
 import 'package:smart_farmer_app/model/inventory.dart';
 import 'package:smart_farmer_app/model/upload.dart';
 
@@ -20,6 +21,7 @@ class InventoryProvider extends ChangeNotifier {
   });
 
   LoadingState loadingState = const LoadingStateInitial();
+  LoadingState loadingStateHistory = const LoadingStateInitial();
 
   List<XFile> _images = [];
   List<String> _imageUrls = [];
@@ -29,8 +31,10 @@ class InventoryProvider extends ChangeNotifier {
 
   InventoryResponse? inventoryResponse;
   UploadResponse? uploadResponse;
+  HistoryInventoryResponse? historyInventoryResponse;
 
   List<Inventory> inventories = [];
+  List<HistoryInventory> history = [];
 
   int? pageItems = 1;
   int sizeItems = 10;
@@ -108,6 +112,57 @@ class InventoryProvider extends ChangeNotifier {
     inventories.clear();
     await getAllInventory(
         idKandang: idKandang, searchValue: searchValue, category: category);
+  }
+
+  Future<void> getHistoryInventory({
+    required String idKandang,
+    String? kategori,
+  }) async {
+    try {
+      if (pageItems == 1) {
+        loadingStateHistory = const LoadingState.loading();
+        notifyListeners();
+      }
+
+      final repository = await authRepository.getUser();
+      final token = repository?.token;
+
+      if (token == null) {
+        loadingStateHistory = const LoadingState.error('Token is null');
+        notifyListeners();
+        return;
+      }
+
+      historyInventoryResponse = await apiService.getHistoryInventory(
+        token: token,
+        idKandang: idKandang,
+        kategori: kategori,
+        page: pageItems!,
+        pageSize: sizeItems,
+      );
+
+      if (historyInventoryResponse!.success) {
+        history = historyInventoryResponse!.result.data;
+        loadingStateHistory = const LoadingState.loaded();
+        notifyListeners();
+      } else {
+        loadingStateHistory =
+            LoadingState.error(historyInventoryResponse!.message);
+        notifyListeners();
+      }
+    } catch (e) {
+      loadingStateHistory = LoadingState.error(e.toString());
+      notifyListeners();
+    }
+  }
+
+  Future<void> refreshHistoryInventory({
+    required String idKandang,
+    String? kategori,
+  }) async {
+    pageItems = 1;
+    history.clear();
+    await getHistoryInventory(idKandang: idKandang, kategori: kategori);
   }
 
   Future<void> createInventory({

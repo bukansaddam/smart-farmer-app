@@ -5,7 +5,6 @@ import 'package:smart_farmer_app/provider/auth_provider.dart';
 import 'package:smart_farmer_app/provider/home_provider.dart';
 import 'package:smart_farmer_app/provider/inventory_provider.dart';
 import 'package:smart_farmer_app/provider/kandang_provider.dart';
-import 'package:smart_farmer_app/provider/laporan_provider.dart';
 import 'package:smart_farmer_app/provider/statistic_provider.dart';
 import 'package:smart_farmer_app/screen/auth/login_screen.dart';
 import 'package:smart_farmer_app/screen/auth/register_screen.dart';
@@ -46,6 +45,7 @@ class InvestorApp extends StatelessWidget {
         ),
       ],
       child: MaterialApp.router(
+        debugShowCheckedModeBanner: false,
         theme: ThemeData(
           scaffoldBackgroundColor: const Color(0xFFF6F7FC),
           bottomSheetTheme: const BottomSheetThemeData(
@@ -90,21 +90,21 @@ class InvestorApp extends StatelessWidget {
         builder: (context, state) => const HomeInvestorScreen(),
         routes: [
           GoRoute(
-              path: 'detail_inventory/:id',
-              name: 'detail_inventory',
-              builder: (context, state) {
-                String extraCategory =
-                    (state.extra as Map<String, dynamic>)['category'] as String;
-                String extraIdKandang = (state.extra
-                    as Map<String, dynamic>)['idKandang'] as String;
-                debugPrint('extra: ${state.extra}');
-                return DetailInventoryScreen(
-                  id: state.pathParameters['id']!,
-                  category: extraCategory,
-                  kandangId: extraIdKandang,
-                );
-              },
-              ),
+            path: 'detail_inventory/:id',
+            name: 'detail_inventory',
+            builder: (context, state) {
+              String extraCategory =
+                  (state.extra as Map<String, dynamic>)['category'] as String;
+              String extraIdKandang =
+                  (state.extra as Map<String, dynamic>)['idKandang'] as String;
+              debugPrint('extra: ${state.extra}');
+              return DetailInventoryScreen(
+                id: state.pathParameters['id']!,
+                category: extraCategory,
+                kandangId: extraIdKandang,
+              );
+            },
+          ),
           GoRoute(
             path: 'statistik',
             name: 'statistik',

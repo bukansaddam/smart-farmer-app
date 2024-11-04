@@ -9,7 +9,8 @@ class DashboardInvestorScreen extends StatefulWidget {
   const DashboardInvestorScreen({super.key});
 
   @override
-  State<DashboardInvestorScreen> createState() => _DashboardInvestorScreenState();
+  State<DashboardInvestorScreen> createState() =>
+      _DashboardInvestorScreenState();
 }
 
 class _DashboardInvestorScreenState extends State<DashboardInvestorScreen> {

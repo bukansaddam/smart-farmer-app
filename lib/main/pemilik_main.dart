@@ -17,6 +17,7 @@ import 'package:smart_farmer_app/screen/pemilik/inventory/detail_inventory_scree
 import 'package:smart_farmer_app/screen/home_pemilik_screen.dart';
 import 'package:smart_farmer_app/screen/auth/login_screen.dart';
 import 'package:smart_farmer_app/screen/pemilik/inventory/edit_inventory_screen.dart';
+import 'package:smart_farmer_app/screen/pemilik/inventory/history_inventory_screen.dart';
 import 'package:smart_farmer_app/screen/pemilik/kandang/add_kandang_screen.dart';
 import 'package:smart_farmer_app/screen/pemilik/kandang/detail_kandang_screen.dart';
 import 'package:smart_farmer_app/screen/pemilik/kandang/edit_kandang_screen.dart';
@@ -63,6 +64,7 @@ class PemilikApp extends StatelessWidget {
         ),
       ],
       child: MaterialApp.router(
+        debugShowCheckedModeBanner: false,
         theme: ThemeData(
           scaffoldBackgroundColor: const Color(0xFFF6F7FC),
           bottomSheetTheme: const BottomSheetThemeData(
@@ -247,6 +249,20 @@ class PemilikApp extends StatelessWidget {
                 kategori: kategori,
                 idKandang: extraId,
                 title: extraTitle,
+              );
+            },
+          ),
+          GoRoute(
+            path: 'history_inventory',
+            name: 'history_inventory',
+            builder: (context, state) {
+              String extraId =
+                  (state.extra as Map<String, dynamic>)['idKandang'] as String;
+              String extraCategory =
+                  (state.extra as Map<String, dynamic>)['category'] as String;
+              return HistoryInventoryScreen(
+                idKandang: extraId,
+                kategori: extraCategory,
               );
             },
           ),

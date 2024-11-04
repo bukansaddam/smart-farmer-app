@@ -4,6 +4,7 @@ import 'package:smart_farmer_app/data/api/api_service.dart';
 import 'package:smart_farmer_app/data/local/auth_repository.dart';
 import 'package:smart_farmer_app/model/login.dart';
 import 'package:smart_farmer_app/model/register.dart';
+import 'package:smart_farmer_app/model/upload.dart';
 import 'package:smart_farmer_app/model/user.dart';
 
 class AuthProvider extends ChangeNotifier {
@@ -16,8 +17,10 @@ class AuthProvider extends ChangeNotifier {
 
   RegisterResponse? registerResponse;
   LoginResponse? loginResponse;
+  UploadResponse? uploadResponse;
 
   LoadingState loadingState = const LoadingState.initial();
+  LoadingState loadingStateKode = const LoadingState.initial();
 
   String? _message;
   String? get message => _message;
@@ -181,5 +184,28 @@ class AuthProvider extends ChangeNotifier {
     await authRepository.saveState(false);
     await authRepository.deleteUser();
     notifyListeners();
+  }
+
+  Future<void> getKodeOwner() async {
+    try {
+      loadingStateKode = const LoadingState.loading();
+      notifyListeners();
+
+      final repository = await authRepository.getUser();
+      final token = repository!.token;
+
+      uploadResponse = await apiService.getKodeOwner(token: token);
+
+      if (uploadResponse!.success) {
+        loadingStateKode = const LoadingState.loaded();
+        notifyListeners();
+      } else {
+        loadingStateKode = LoadingState.error(uploadResponse!.message);
+        notifyListeners();
+      }
+    } catch (error) {
+      loadingStateKode = LoadingState.error(error.toString());
+      notifyListeners();
+    }
   }
 }

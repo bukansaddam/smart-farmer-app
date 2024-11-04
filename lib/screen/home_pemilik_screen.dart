@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
+import 'package:smart_farmer_app/model/kandang.dart';
+import 'package:smart_farmer_app/provider/auth_provider.dart';
 import 'package:smart_farmer_app/provider/home_provider.dart';
 import 'package:smart_farmer_app/provider/inventory_provider.dart';
 import 'package:smart_farmer_app/provider/kandang_provider.dart';
@@ -20,10 +22,16 @@ class HomePemilikScreen extends StatefulWidget {
 }
 
 class _HomePemilikScreenState extends State<HomePemilikScreen> {
-  late int _selectedIndex;
+  int _selectedIndex = 0;
   String _title = 'Dashboard';
+  bool isOwner = true;
 
   late KandangProvider kandangProvider;
+  late AuthProvider authProvider;
+
+  final actor = const String.fromEnvironment('actor', defaultValue: 'pemilik');
+
+  bool get isEmployee => actor == 'petugas';
 
   @override
   void didChangeDependencies() {
@@ -36,18 +44,43 @@ class _HomePemilikScreenState extends State<HomePemilikScreen> {
     super.initState();
 
     kandangProvider = context.read<KandangProvider>();
+    authProvider = context.read<AuthProvider>();
 
-    Future.microtask(() {
-      kandangProvider.refreshKandang().then(
-        (value) {
-          if (kandangProvider.kandangResponse != null) {
-            kandangProvider.setSelectedKandang(
-                kandang: kandangProvider.kandangResponse!.result.data.first);
-          } else {
-            kandangProvider.setSelectedKandang(kandang: null);
-          }
-        },
-      );
+    // Periksa apakah daftar tidak kosong sebelum mengakses elemen pertama
+    // if (kandangProvider.listKandang.isNotEmpty) {
+    //   kandangProvider.selectedKandang = kandangProvider.listKandang.firstOrNull;
+    // }
+    if (kandangProvider.selectedKandang != null) {
+      kandangProvider.selectedKandang = kandangProvider.listKandang.firstOrNull;
+    } else {
+      kandangProvider.selectedKandang = const Kandang(
+          id: "",
+          nama: "",
+          lokasi: "",
+          latitude: 0,
+          longitude: 0,
+          jumlahAyam: 0,
+          images: []);
+    }
+
+    // Contoh logika asinkron
+    Future.microtask(() async {
+      await kandangProvider.refreshKandang();
+      if (kandangProvider.listKandang.isNotEmpty) {
+        setState(() {
+          kandangProvider.selectedKandang = kandangProvider.listKandang.first;
+        });
+      } else {
+        kandangProvider.selectedKandang = const Kandang(
+            id: "",
+            nama: "",
+            lokasi: "",
+            latitude: 0,
+            longitude: 0,
+            jumlahAyam: 0,
+            images: []);
+      }
+      await authProvider.getKodeOwner();
     });
   }
 
@@ -60,7 +93,7 @@ class _HomePemilikScreenState extends State<HomePemilikScreen> {
               ? 'Vitamin'
               : 'Disinfektan';
       context.read<InventoryProvider>().refreshInventory(
-            idKandang: kandangProvider.selectedKandang!.id,
+            idKandang: kandangProvider.selectedKandang?.id ?? '',
             category: category,
           );
     }
@@ -84,6 +117,8 @@ class _HomePemilikScreenState extends State<HomePemilikScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final kandangProvider = context.watch<KandangProvider>();
+
     return Scaffold(
       drawer: Drawer(
         child: ListView(
@@ -235,7 +270,35 @@ class _HomePemilikScreenState extends State<HomePemilikScreen> {
                   },
                 ),
               ]
-            : null,
+            : _selectedIndex == 4 ||
+                    _selectedIndex == 5 ||
+                    (_selectedIndex == 6 && isOwner)
+                ? [
+                    PopupMenuButton(
+                      itemBuilder: (context) {
+                        return [
+                          const PopupMenuItem(
+                            value: 'History',
+                            child: Text('History'),
+                          ),
+                        ];
+                      },
+                      onSelected: (String value) {
+                        if (kandangProvider.selectedKandang != null) {
+                          context.goNamed('history_inventory', extra: {
+                            'idKandang':
+                                kandangProvider.selectedKandang?.id ?? '',
+                            'category': _selectedIndex == 4
+                                ? 'Pakan'
+                                : _selectedIndex == 5
+                                    ? 'Vitamin'
+                                    : 'Disinfektan',
+                          });
+                        }
+                      },
+                    ),
+                  ]
+                : null,
       ),
       body: SafeArea(
         child: _widgetOptions[_selectedIndex],

@@ -5,6 +5,7 @@ import 'package:smart_farmer_app/model/detail_inventory.dart';
 import 'package:smart_farmer_app/model/detail_kandang.dart';
 import 'package:smart_farmer_app/model/detail_laporan.dart';
 import 'package:smart_farmer_app/model/detail_petugas.dart';
+import 'package:smart_farmer_app/model/history_inventory.dart';
 import 'package:smart_farmer_app/model/inventory.dart';
 import 'package:smart_farmer_app/model/kandang.dart';
 import 'package:smart_farmer_app/model/kandang_petugas.dart';
@@ -17,7 +18,8 @@ import 'package:smart_farmer_app/model/statistic.dart';
 import 'package:smart_farmer_app/model/upload.dart';
 
 class ApiService {
-  static const String baseUrl = 'http://192.168.1.4:3000';
+  // static const String baseUrl = 'https://lionfish-app-p99go.ondigitalocean.app';
+  static const String baseUrl = 'http://192.168.110.175:3000';
   static const String _auth = '/auth';
   static const String _user = '/user';
   static const String _inventory = '/inventory';
@@ -108,6 +110,25 @@ class ApiService {
     } else {
       debugPrint(response.body);
       return RegisterResponse.fromJson(jsonDecode(response.body));
+    }
+  }
+
+  Future<UploadResponse> getKodeOwner({
+    required String token,
+  }) async {
+    final response = await http.get(
+      Uri.parse('$baseUrl$_user/kode'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Authorization': 'Bearer $token',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      debugPrint(response.body);
+      return UploadResponse.fromJson(jsonDecode(response.body));
+    } else {
+      return UploadResponse.fromJson(jsonDecode(response.body));
     }
   }
 
@@ -291,6 +312,29 @@ class ApiService {
       return UploadResponse.fromJson(jsonDecode(response.body));
     } else {
       return UploadResponse.fromJson(jsonDecode(response.body));
+    }
+  }
+
+  Future<HistoryInventoryResponse> getHistoryInventory({
+    required String token,
+    required String idKandang,
+    int page = 1,
+    int pageSize = 10,
+    String? kategori,
+  }) async {
+    final response = await http.get(
+      Uri.parse(
+          '$baseUrl$_inventory/history/$idKandang?page=$page&pageSize=$pageSize&kategori=$kategori'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Authorization': 'Bearer $token',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      return HistoryInventoryResponse.fromJson(jsonDecode(response.body));
+    } else {
+      return HistoryInventoryResponse.fromJson(jsonDecode(response.body));
     }
   }
 
